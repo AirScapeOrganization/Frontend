@@ -1,0 +1,43 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a role="button" class="navbar-burger text-orange-500" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu mx-10 my-3">
+        <div class="flex items-center gap-5">
+            <a routerLink="/" class="border px-3 py-1 rounded-lg">
+                Home
+            </a>
+
+            <a routerLink="/about" class="border px-3 py-1 rounded-lg">
+                Properties
+            </a>
+
+            <a routerLink="/contact" class="border px-3 py-1 rounded-lg">
+                Blog
+            </a>
+
+            <a routerLink="/contact" class="border px-3 py-1 rounded-lg">
+                Owners
+            </a>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a routerLink="/register" class="border px-3 py-1 rounded-lg">
+                        Sign Up
+                    </a>
+                    <a routerLink="/login" class="border px-3 py-1 rounded-lg bg-orange-600 text-white">
+                        Sign In
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

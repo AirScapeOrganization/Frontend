@@ -1,0 +1,7 @@
+.image-section{
+    background-image: url("/../img/bgForm2.jpg");
+    background-position: center;
+    background-size: cover;
+    border: 2vh solid white;
+    border-radius: 4vh;
+}
