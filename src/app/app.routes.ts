@@ -5,9 +5,29 @@ import { HomeComponent } from './home/home.component';
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   {
-    path: 'explorer',
+    path: 'explore',
     loadComponent: () =>
       import('./explorer/explorer.component').then((c) => c.ExplorerComponent),
+  },
+  {
+    path: 'owners',
+    loadComponent: () =>
+      import('./owners/owners.component').then((c) => c.OwnersComponent),
+  },
+  {
+    path: 'blog',
+    loadComponent: () =>
+      import('./shared/pages/blog/blog.component').then((c) => c.BlogComponent),
+  },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./shared/pages/contact/contact.component').then((c) => c.ContactComponent),
+  },
+  {
+    path: 'help',
+    loadComponent: () =>
+      import('./shared/pages/help/help.component').then((c) => c.HelpComponent),
   },
   {
     path: 'login',

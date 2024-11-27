@@ -1,79 +1,58 @@
 <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a
-        role="button"
-        class="navbar-burger text-orange-500"
-        aria-label="menu"
-        aria-expanded="false"
-        data-target="navbarBasicExample"
-      >
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
-  
-    <div id="navbarBasicExample" class="navbar-menu mx-10 my-3">
-      <div class="flex items-center gap-5">
-        <a routerLink="/" class="border px-3 py-1 rounded-lg">
-          Home
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger text-orange-500" aria-label="menu" aria-expanded="false"
+      data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu mx-10 my-3">
+    <div class="flex items-center gap-5">
+      <ng-container *ngFor="let button of filteredButtons">
+        <a [routerLink]="button.link" class="border px-3 py-1 rounded-lg">
+          {{ button.label }}
         </a>
-  
-        <!-- Menú Properties con dropdown -->
-        <div class="relative">
-          <a
-            (click)="toggleDropdown()"
-            class="border px-3 py-1 rounded-lg flex items-center"
-          >
-            Properties
-            <fa-icon [icon]="faAngleDown"></fa-icon>
+      </ng-container>
+
+      <div class="relative select-none" *ngIf="currentRoute === '/'">
+        <a (click)="toggleDropdown()"
+          class="border px-3 py-1 rounded-lg flex items-center justify-center gap-3">
+          More
+          <fa-icon [icon]="isDropdownOpen ? faAngleUp : faAngleDown"></fa-icon>
+        </a>
+
+        <div #dropdownMenu *ngIf="isDropdownOpen"
+          class="absolute left-0 w-48 bg-white border rounded-lg shadow-lg z-10 flex flex-col">
+          <a routerLink="/blog"
+            class="px-4 py-2 text-black hover:bg-gray-100 flex justify-between items-center">Blog
+            <fa-icon [icon]="faCircleInfo" class="flex"></fa-icon>
           </a>
-  
-          <!-- Dropdown content -->
-          <div
-            *ngIf="isDropdownOpen"
-            class="absolute left-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10"
-          >
-            <a
-              routerLink="/property1"
-              class="block px-4 py-2 text-black hover:bg-gray-100"
-              >Property 1</a
-            >
-            <a
-              routerLink="/property2"
-              class="block px-4 py-2 text-black hover:bg-gray-100"
-              >Property 2</a
-            >
-            <a
-              routerLink="/property3"
-              class="block px-4 py-2 text-black hover:bg-gray-100"
-              >Property 3</a
-            >
-          </div>
-        </div>
-  
-        <a routerLink="/contact" class="border px-3 py-1 rounded-lg">
-          Blog
-        </a>
-  
-        <a routerLink="/contact" class="border px-3 py-1 rounded-lg">
-          Owners
-        </a>
-      </div>
-  
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="buttons">
-            <a routerLink="/register" class="border px-3 py-1 rounded-lg">
-              Sign Up
-            </a>
-            <a routerLink="/login" class="px-3 py-1 rounded-lg bg-orange-600 text-white">
-              Sign In
-            </a>
-          </div>
+          <a routerLink="/contact"
+            class="px-4 py-2 text-black hover:bg-gray-100 flex justify-between items-center">Contact
+            <fa-icon [icon]="faEnvelope" class="flex"></fa-icon>
+          </a>
+          <a routerLink="/help"
+            class="px-4 py-2 text-black hover:bg-gray-100 flex justify-between items-center">Help
+            <fa-icon [icon]="faCircleQuestion" class="flex"></fa-icon>
+          </a>
         </div>
       </div>
     </div>
-  </nav>
-  
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a routerLink="/register" class="border px-3 py-1 rounded-lg">
+            Sign Up
+          </a>
+          <a routerLink="/login" class="px-3 py-1 rounded-lg bg-orange-600 text-white">
+            Sign In
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
