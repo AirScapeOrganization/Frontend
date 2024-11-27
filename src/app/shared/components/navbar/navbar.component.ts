@@ -19,8 +19,8 @@ export class NavbarComponent implements OnInit {
     { label: 'Explore', link: '/explore', visibleOnRoutes: ['/', '/owners', '/contact', '/blog', '/help']},
     { label: 'Owners', link: '/owners', visibleOnRoutes: ['/', '/explore', '/contact', '/help', '/blog']},
     { label: 'Contact', link: '/contact', visibleOnRoutes: ['/owners', '/explore', '/blog', '/help']},
-    { label: 'Help', link: '/help', visibleOnRoutes: ['/explore', '/owners', '/contact', '/blog']},
     { label: 'Blog', link: '/blog', visibleOnRoutes: ['/explore', '/owners', '/contact', '/help']},
+    { label: 'Help', link: '/help', visibleOnRoutes: ['/explore', '/owners', '/contact', '/blog']},
 
   ];
 
