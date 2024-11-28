@@ -28,14 +28,13 @@ export class ListingService {
     this.#state.update(state => ({ ...state, loading: true }));
     
     this.http.get<any>(environment.ApiUrl + 'listings')
-    .pipe(delay(0))
+    .pipe(delay(1500))
     .subscribe(
       res => {
         this.#state.set({
           listings: res.properties,
           loading: false,
         });
-        console.log("Listings", res.properties);
       },
       error =>{
         console.error("Error fetching listings", error);

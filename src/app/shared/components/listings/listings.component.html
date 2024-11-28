@@ -1,0 +1,27 @@
+@if (listingService.loading()) {
+    <div class="absolute h-screen w-screen flex justify-center items-center z-200 bg-white">
+        <p class="font-bold">Loading properties</p>
+    </div>
+} @else {
+    <div class="flex flex-wrap sm:flex-row md:flex-row justify-center gap-3">
+        @for (item of listingService.listings(); track $index) {
+            <div class="flex flex-col p-4 w-full sm:w-2/6 md:w-3/12 lg:w-2/12 gap-3">
+                <span class="flex items-center justify-between w-full">
+                    <h2 class="font-bold text-xl">{{ item.title }}</h2>
+                    <p class="font-bold text-sm">{{ item.price_per_night}} $ <fa-icon [icon]="faTags"></fa-icon></p>
+                </span>
+                <p class="line-clamp-4 text-sm">{{ item.description }}</p>
+                <span class="flex justify-between w-full text-sm">
+                    <p><fa-icon [icon]="faLocationDot"></fa-icon>  {{ item.address }}</p>
+                </span>
+
+                <span class="flex gap-3 w-full text-sm">
+                    <p> <fa-icon [icon]="faBed"></fa-icon> {{ item.num_bedrooms }}</p>
+                    <p><fa-icon [icon]="faRestroom"></fa-icon> {{ item.num_bathrooms }}</p>
+                </span>
+                <p class="text-sm"><fa-icon [icon]="faPeopleGroup"></fa-icon> {{ item.max_guests }}</p>
+            </div>
+        }
+    </div>
+
+}
