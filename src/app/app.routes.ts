@@ -6,6 +6,7 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   {
     path: 'explore',
+    title: 'Explore in AirScape',
     loadComponent: () =>
       import('./explorer/explorer.component').then((c) => c.ExplorerComponent),
   },
