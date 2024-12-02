@@ -1,43 +1,50 @@
 <div class="h-screen flex items-center justify-center">
     <div class="form-section w-6/12 h-screen flex items-center justify-center">
-        <form action="" class="flex flex-col">
+        <form (ngSubmit)="register()" class="flex flex-col">
             <div class="text-center">
                 <h1 class="text-5xl font-bold text-orange-600 mb-2">Sign Up</h1>
                 <p>Create a new user for AirScape</p>
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="p-3 border mt-2 rounded-lg w-80" type="text" placeholder="example26l">
+                    <input class="p-3 border mt-2 rounded-lg w-80" type="text" placeholder="example26l"
+                        [(ngModel)]="username" name="username">
                 </div>
             </div>
 
             <div class="field">
                 <div class="control">
-                    <input class="p-3 border mt-2 rounded-lg w-80" type="email" placeholder="example@gmail.com">
+                    <input class="p-3 border mt-2 rounded-lg w-80" type="email" placeholder="example@gmail.com"
+                        [(ngModel)]="email" name="email">
                 </div>
             </div>
 
             <div class="field">
                 <div class="control">
-                    <input class="p-3 border mt-2 rounded-lg w-80" type="password" placeholder="*******">
+                    <input class="p-3 border mt-2 rounded-lg w-80" type="password" placeholder="*******"
+                        [(ngModel)]="password" name="password">
                 </div>
             </div>
 
             <div class="field">
                 <div class="control">
-                    <select name="" id="" class="border mt-2 w-full p-2 rounded-lg">
-                        <option selected>Select your role</option>
-                        <option value="">Owner</option>
-                        <option value="">Tenant</option>
+                    <select
+                        id=""
+                        class="border mt-2 w-full p-2 rounded-lg"
+                        [(ngModel)]="is_owner"
+                        name="is_owner"
+                    >
+                        <option [ngValue]="null" disabled selected>Select your role</option>
+                        <option [ngValue]="true">Owner</option>
+                        <option [ngValue]="false">Tenant</option>
                     </select>
-                </div>
+                </div>                
             </div>
 
-            <button class="bg-orange-600 p-3 text-white rounded-lg w-full mt-4">
+            <button class="bg-orange-600 p-3 text-white rounded-lg w-full mt-4" type="submit">
                 Continue
             </button>
             <a routerLink="/login" class="text-sm mt-3 underline">You have an account? Log in</a>
-
         </form>
     </div>
     <div class="image-section hidden sm:flex w-6/12 h-screen"></div>
