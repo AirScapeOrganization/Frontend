@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, Router, NavigationEnd } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faAngleDown, faAngleUp, faCircleInfo, faCircleQuestion, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { faCompass, faEnvelope, faCircleQuestion } from '@fortawesome/free-regular-svg-icons';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-navbar',
@@ -12,25 +14,21 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  isDropdownOpen = false;
   currentRoute: string = '';
-  buttons: { label: string; link: string; visibleOnRoutes: string[] }[] = [
-    { label: 'Home', link: '/', visibleOnRoutes: ['/explore', '/owners', '/contact', '/help', '/blog']},
-    { label: 'Explore', link: '/explore', visibleOnRoutes: ['/', '/owners', '/contact', '/blog', '/help']},
-    { label: 'Owners', link: '/owners', visibleOnRoutes: ['/', '/explore', '/contact', '/help', '/blog']},
-    { label: 'Contact', link: '/contact', visibleOnRoutes: ['/owners', '/explore', '/blog', '/help']},
-    { label: 'Blog', link: '/blog', visibleOnRoutes: ['/explore', '/owners', '/contact', '/help']},
-    { label: 'Help', link: '/help', visibleOnRoutes: ['/explore', '/owners', '/contact', '/blog']},
-
+  buttons: { label: string; link: string; icon: any; visibleOnRoutes: string[] }[] = [
+    { label: 'Home', link: '/', icon: faCircleInfo, visibleOnRoutes: ['/explore', '/contact', '/help', '/blog'] },
+    { label: 'Explore', link: '/explore', icon: faCompass, visibleOnRoutes: ['/', '/contact', '/blog', '/help'] },
+    { label: 'Contact', link: '/contact', icon: faEnvelope, visibleOnRoutes: ['/', '/explore', '/blog', '/help'] },
+    { label: 'Blog', link: '/blog', icon: faCircleInfo, visibleOnRoutes: ['/', '/explore', '/contact', '/help'] },
+    { label: 'Help', link: '/help', icon: faCircleQuestion, visibleOnRoutes: ['/', '/explore', '/contact', '/blog'] },
   ];
 
-  filteredButtons: { label: string; link: string }[] = [];
+  filteredButtons: { label: string; link: string; icon: any }[] = [];
 
-  faAngleDown = faAngleDown;
+  faCompass = faCompass;
   faCircleInfo = faCircleInfo;
-  faEnvelope = faEnvelope;
   faCircleQuestion = faCircleQuestion;
-  faAngleUp = faAngleUp;
+  faEnvelope = faEnvelope;
 
   constructor(private router: Router) {}
 
@@ -50,9 +48,5 @@ export class NavbarComponent implements OnInit {
     this.filteredButtons = this.buttons.filter((button) =>
       button.visibleOnRoutes.includes(this.currentRoute)
     );
-  }
-
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
   }
 }

@@ -14,32 +14,9 @@
       <ng-container *ngFor="let button of filteredButtons">
         <a [routerLink]="button.link" class="border px-3 py-1 rounded-lg">
           {{ button.label }}
+          <fa-icon [icon]="button.icon" class="navbar-icon"></fa-icon>
         </a>
       </ng-container>
-
-      <div class="relative select-none" *ngIf="currentRoute === '/'">
-        <a (click)="toggleDropdown()"
-          class="border px-3 py-1 rounded-lg flex items-center justify-center gap-3">
-          More
-          <fa-icon [icon]="isDropdownOpen ? faAngleUp : faAngleDown"></fa-icon>
-        </a>
-
-        <div #dropdownMenu *ngIf="isDropdownOpen"
-          class="absolute left-0 w-48 bg-white border rounded-lg shadow-lg z-10 flex flex-col">
-          <a routerLink="/blog"
-            class="px-4 py-2 text-black hover:bg-gray-100 flex justify-between items-center">Blog
-            <fa-icon [icon]="faCircleInfo" class="flex"></fa-icon>
-          </a>
-          <a routerLink="/contact"
-            class="px-4 py-2 text-black hover:bg-gray-100 flex justify-between items-center">Contact
-            <fa-icon [icon]="faEnvelope" class="flex"></fa-icon>
-          </a>
-          <a routerLink="/help"
-            class="px-4 py-2 text-black hover:bg-gray-100 flex justify-between items-center">Help
-            <fa-icon [icon]="faCircleQuestion" class="flex"></fa-icon>
-          </a>
-        </div>
-      </div>
     </div>
 
     <div class="navbar-end">

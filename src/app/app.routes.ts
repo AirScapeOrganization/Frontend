@@ -32,16 +32,19 @@ export const routes: Routes = [
   },
   {
     path: 'login',
+    title: 'Log in to your account',
     loadComponent: () =>
       import('./auth/login/login.component').then((c) => c.LoginComponent),
   },
   {
     path: 'register',
+    title: 'Register to access content',
     loadComponent: () =>
       import('./auth/register/register.component').then((c) => c.RegisterComponent),
   },
   {
     path: 'error',
+    title: 'Page not found 404',
     loadComponent: () =>
       import('./shared/pages/error/error.component').then((c) => c.ErrorComponent),
   },
