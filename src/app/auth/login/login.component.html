@@ -7,12 +7,12 @@
                 <p>Welcome to AirScape</p>
             </div>
             <div class="mt-2">
-                <label for="" class="label my-1">Email</label>
-                <input [(ngModel)]="email" name="email" type="email" class="p-3 border rounded-lg w-80" placeholder="Email">
+                <label for="email" class="label my-1">Email</label>
+                <input [(ngModel)]="email" name="email" id="email" type="email" class="p-3 border rounded-lg w-80" placeholder="Email" autocomplete="email">
             </div>
             <div class="mt-2">
-                <label for="" class="label my-1">Password</label>
-                <input [(ngModel)]="password" name="password" type="password" class="p-3 border rounded-lg w-80" placeholder="Password">
+                <label for="password" class="label my-1">Password</label>
+                <input [(ngModel)]="password" name="password" id="password" type="password" class="p-3 border rounded-lg w-80" placeholder="Password" autocomplete="new-password">
             </div>
             <button class="bg-orange-600 p-3 text-white rounded-lg w-full mt-4" type="submit">
                 Continue

@@ -76,17 +76,4 @@ export class AuthService {
     });
     console.error('Error in log in', error);
   }
-
-  logout() {
-    this.#state.set({
-      user: null,
-      token: null,
-      loading: false,
-      error: null
-    });
-
-    localStorage.removeItem('authToken');
-    console.log('LogOut Succesfully');
-
-  }
 }

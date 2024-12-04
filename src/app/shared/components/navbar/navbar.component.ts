@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, RouterLink} from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import { faCompass, faEnvelope, faCircleQuestion } from '@fortawesome/free-regular-svg-icons';
+import { faHome, faAngleDown, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faCompass, faEnvelope, faCircleQuestion, faComments } from '@fortawesome/free-regular-svg-icons';
 import { CommonModule } from '@angular/common';
-
+import { UserService } from '../../services/userService/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,23 +14,26 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
+  isMobileMenuOpen = false;
+  isMenuOpen = false;
+  isDropdownOpen = false;
+  faAngleDown = faAngleDown;
+  faBell = faBell;
   currentRoute: string = '';
-  buttons: { label: string; link: string; icon: any; visibleOnRoutes: string[] }[] = [
-    { label: 'Home', link: '/', icon: faCircleInfo, visibleOnRoutes: ['/explore', '/contact', '/help', '/blog'] },
+  user: { id: number; username: string; role: string } | null = null;
+
+  isLoading = true;
+
+  buttons = [
+    { label: 'Home', link: '/', icon: faHome, visibleOnRoutes: ['/explore', '/contact', '/help', '/blog'] },
     { label: 'Explore', link: '/explore', icon: faCompass, visibleOnRoutes: ['/', '/contact', '/blog', '/help'] },
     { label: 'Contact', link: '/contact', icon: faEnvelope, visibleOnRoutes: ['/', '/explore', '/blog', '/help'] },
-    { label: 'Blog', link: '/blog', icon: faCircleInfo, visibleOnRoutes: ['/', '/explore', '/contact', '/help'] },
+    { label: 'Blog', link: '/blog', icon: faComments, visibleOnRoutes: ['/', '/explore', '/contact', '/help'] },
     { label: 'Help', link: '/help', icon: faCircleQuestion, visibleOnRoutes: ['/', '/explore', '/contact', '/blog'] },
   ];
 
-  filteredButtons: { label: string; link: string; icon: any }[] = [];
-
-  faCompass = faCompass;
-  faCircleInfo = faCircleInfo;
-  faCircleQuestion = faCircleQuestion;
-  faEnvelope = faEnvelope;
-
-  constructor(private router: Router) {}
+  filteredButtons = this.buttons;
+  constructor(private router: Router, public userService: UserService) {}
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
@@ -39,9 +42,17 @@ export class NavbarComponent implements OnInit {
         this.updateFilteredButtons();
       }
     });
-
-    this.currentRoute = this.router.url;
-    this.updateFilteredButtons();
+  
+    this.userService.user$.subscribe((user) => {
+      this.user = user;
+    });
+  
+    this.userService.loading$.subscribe((loading) => {
+      this.isLoading = loading;
+    });
+  
+    // Forzar la carga inicial del usuario
+    this.userService.loadUserFromToken();
   }
 
   updateFilteredButtons() {
@@ -49,4 +60,37 @@ export class NavbarComponent implements OnInit {
       button.visibleOnRoutes.includes(this.currentRoute)
     );
   }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+  
+  closeDropdown() {
+    this.isDropdownOpen = false;
+  }
+
+  navigateToProfile() {
+    this.router.navigate(['/profile']);
+  }
+
+  navigateToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
+
+  get showAuthLinks(): boolean {
+    return !this.isLoading && !this.user;
+  }
+
+  logout(): void {
+    this.isDropdownOpen = false;
+    localStorage.removeItem('authToken');
+    this.userService.clearUser();
+    this.userService.loadUserFromToken(); // Actualiza el estado del usuario.
+    this.router.navigate(['/login']);
+  }
+  
 }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { AuthGuard } from './auth/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -41,6 +42,12 @@ export const routes: Routes = [
     title: 'Register to access content',
     loadComponent: () =>
       import('./auth/register/register.component').then((c) => c.RegisterComponent),
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./dashboard/dashboard.component').then((c) => c.DashboardComponent),
+    canActivate: [AuthGuard],
   },
   {
     path: 'error',

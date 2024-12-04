@@ -1,35 +1,98 @@
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a role="button" class="navbar-burger text-orange-500" aria-label="menu" aria-expanded="false"
-      data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
+<nav role="navigation" aria-label="main navigation" class="main-menu">
+  <!-- Menú Principal -->
+  <div class="navbar-start">
+    <ng-container *ngFor="let button of filteredButtons">
+      <a [routerLink]="button.link" class="border rounded-lg px-2">
+        {{ button.label }}
+        <fa-icon [icon]="button.icon" class="navbar-icon"></fa-icon>
+      </a>
+      
+    </ng-container>
   </div>
 
-  <div id="navbarBasicExample" class="navbar-menu mx-10 my-3">
-    <div class="flex items-center gap-5">
-      <ng-container *ngFor="let button of filteredButtons">
-        <a [routerLink]="button.link" class="border px-3 py-1 rounded-lg">
-          {{ button.label }}
-          <fa-icon [icon]="button.icon" class="navbar-icon"></fa-icon>
-        </a>
-      </ng-container>
-    </div>
+  <div>
+    <div *ngIf="isLoading" class="text-gray-500">Loading...</div>
 
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <a routerLink="/register" class="border px-3 py-1 rounded-lg">
-            Sign Up
-          </a>
-          <a routerLink="/login" class="px-3 py-1 rounded-lg bg-orange-600 text-white">
-            Sign In
-          </a>
+    <div *ngIf="!isLoading && user" class="flex items-center gap-3">
+      <div class="flex flex-col justify-center items-center text-sm text-slate-400">
+        <p>{{user.username}}</p>
+        <p>{{user.role}}</p>
+      </div>
+      <a class="w-8 h-8 overflow-hidden rounded-full" (click)="navigateToDashboard()">
+        <img src="/img/bgForm.jpeg" alt="Profile Picture" class="w-full h-full object-cover">
+      </a>
+      <a class="border px-3 py-1 rounded-lg">
+        <fa-icon [icon]="faBell" class="navbar-icon"></fa-icon>
+      </a>
+      
+      <div class="relative">
+        <a class="border px-3 py-1 rounded-lg cursor-pointer" (click)="toggleDropdown()">
+          Settings
+          <fa-icon [icon]="faAngleDown" class="navbar-icon"></fa-icon>
+        </a>
+        <div *ngIf="isDropdownOpen" class="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50">
+          <ul>
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" routerLink="/settings/notifications">Notifications</li>
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" routerLink="/settings/profile">Profile</li>
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="logout()">Logout</li>
+          </ul>          
         </div>
       </div>
     </div>
+
+    <div *ngIf="!isLoading && showAuthLinks" class="navbar-end gap-3">
+      <a routerLink="/register" class="border rounded-lg px-4 py-1">Sign Up</a>
+      <a routerLink="/login" class="rounded-lg px-4 py-1 bg-orange-500 text-white">Sign In</a>
+    </div>
+  </div>
+</nav>
+
+<nav class="mobile-menu">
+  <button class="hamburger-btn" (click)="toggleMobileMenu()">
+    <span class="hamburger-bar"></span>
+    <span class="hamburger-bar"></span>
+    <span class="hamburger-bar"></span>
+  </button>
+
+  <div *ngIf="isMobileMenuOpen" class="mobile-menu-items">
+    <ng-container *ngFor="let button of filteredButtons">
+      <a [routerLink]="button.link" class="mobile-menu-item rounded-lg">
+        {{ button.label }}
+        <fa-icon [icon]="button.icon" class="navbar-icon"></fa-icon>
+      </a>
+    </ng-container>
+
+    <div *ngIf="!isLoading && user" class="mobile-user-menu">
+      <div class="flex flex-col justify-center items-center text-sm text-slate-400">
+        <p>{{user.username}}</p>
+        <p>{{user.role}}</p>
+      </div>
+      <a class="w-8 h-8 overflow-hidden rounded-full" (click)="navigateToDashboard()">
+        <img src="/img/bgForm.jpeg" alt="Profile Picture" class="w-full h-full object-cover">
+      </a>
+      <a>
+        <fa-icon [icon]="faBell" class="navbar-icon border rounded-lg px-4 py-1"></fa-icon>
+      </a>
+      <div class="dropdown relative flex flex-nowrap">
+        <a class="border rounded-lg cursor-pointer" (click)="toggleDropdown()">
+          Settings
+          <fa-icon [icon]="faAngleDown" class="navbar-icon"></fa-icon>
+        </a>
+
+        <div *ngIf="isDropdownOpen" class="absolute bg-white border rounded-lg shadow-lg z-50">
+          <ul>
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" routerLink="/settings/notifications">Notifications</li>
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" routerLink="/settings/profile">Profile</li>
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="logout()">Logout</li>
+          </ul>          
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showAuthLinks" class="navbar-end gap-3">
+      <a routerLink="/register" class="border rounded-lg px-4 py-1">Sign Up</a>
+      <a routerLink="/login" class="rounded-lg px-4 py-1 bg-orange-500 text-white">Sign In</a>
+    </div>
+
   </div>
 </nav>
