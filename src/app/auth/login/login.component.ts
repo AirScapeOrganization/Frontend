@@ -31,7 +31,7 @@ export class LoginComponent {
         localStorage.setItem('authToken', response.token);
 
         setTimeout(() => {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/panel']);
         }, 2000);
       },
       error: (err) => {

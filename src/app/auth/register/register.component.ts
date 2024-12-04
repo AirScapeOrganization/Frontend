@@ -49,7 +49,7 @@ export class RegisterComponent {
           console.log('Register successfully', response);
 
           setTimeout(() => {
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/panel']);
           }, 2000);
         },
         error: (err) => {

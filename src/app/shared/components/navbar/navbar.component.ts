@@ -77,8 +77,8 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/profile']);
   }
 
-  navigateToDashboard() {
-    this.router.navigate(['/dashboard']);
+  navigateToPanel() {
+    this.router.navigate(['/panel']);
   }
 
   get showAuthLinks(): boolean {
@@ -89,7 +89,7 @@ export class NavbarComponent implements OnInit {
     this.isDropdownOpen = false;
     localStorage.removeItem('authToken');
     this.userService.clearUser();
-    this.userService.loadUserFromToken(); // Actualiza el estado del usuario.
+    this.userService.loadUserFromToken();
     this.router.navigate(['/login']);
   }
   

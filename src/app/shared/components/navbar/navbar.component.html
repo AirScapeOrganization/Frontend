@@ -18,8 +18,8 @@
         <p>{{user.username}}</p>
         <p>{{user.role}}</p>
       </div>
-      <a class="w-8 h-8 overflow-hidden rounded-full" (click)="navigateToDashboard()">
-        <img src="/img/bgForm.jpeg" alt="Profile Picture" class="w-full h-full object-cover">
+      <a class="w-8 h-8 overflow-hidden rounded-full" (click)="navigateToPanel()">
+        <img [src]="'https://ui-avatars.com/api/?name=' + user.username + '&background=f77800&color=fff'" alt="Profile Picture" class="w-full h-full object-cover">
       </a>
       <a class="border px-3 py-1 rounded-lg">
         <fa-icon [icon]="faBell" class="navbar-icon"></fa-icon>
@@ -67,8 +67,8 @@
         <p>{{user.username}}</p>
         <p>{{user.role}}</p>
       </div>
-      <a class="w-8 h-8 overflow-hidden rounded-full" (click)="navigateToDashboard()">
-        <img src="/img/bgForm.jpeg" alt="Profile Picture" class="w-full h-full object-cover">
+      <a class="w-8 h-8 overflow-hidden rounded-full" (click)="navigateToPanel()">
+        <img [src]="'https://ui-avatars.com/api/?name=' + user.username + '&background=f77800&color=fff'" alt="Profile Picture" class="w-full h-full object-cover">
       </a>
       <a>
         <fa-icon [icon]="faBell" class="navbar-icon border rounded-lg px-4 py-1"></fa-icon>

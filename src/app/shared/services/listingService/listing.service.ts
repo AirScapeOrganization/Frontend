@@ -1,45 +1,55 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { delay } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, delay, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
+import { Listing } from '../../interface/listing';
 
-interface State{
-  listings: any[];
-  loading: boolean,
-}
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ListingService {
-  
-  private http = inject(HttpClient)
-  
-  #state = signal<State>({
-    loading: false,
-    listings: [],
-  });
-  
-  public listings = computed( () => this.#state().listings);
-  public loading = computed( () => this.#state().loading);
+  private listingSubject = new BehaviorSubject<Listing[] | null>(null);
+  private loadingSubject = new BehaviorSubject<boolean>(false);
 
-  constructor() {
-    this.#state.update(state => ({ ...state, loading: true }));
-    
-    this.http.get<any>(environment.ApiUrl + 'listings')
-    .pipe(delay(1500))
-    .subscribe(
-      res => {
-        this.#state.set({
-          listings: res.properties,
-          loading: false,
-        });
-      },
-      error =>{
-        console.error("Error fetching listings", error);
-        this.#state.set({ ...this.#state(), loading: false});
-      }
-    );
+  public listing$ = this.listingSubject.asObservable();
+  public loading$ = this.loadingSubject.asObservable();
+
+  constructor(private http: HttpClient) {
+    this.getAllListings();
   }
+
+  getAllListings(): void {
+    if (typeof localStorage === 'undefined') {
+      this.listingSubject.next(null);
+      this.loadingSubject.next(false);
+      return;
+    }
+  
+    const token = localStorage.getItem('authToken');
+    this.loadingSubject.next(true);
+  
+    if (token) {
+      try {
+        this.http.get<{ properties: Listing[] }>(environment.ApiUrl + 'listings')
+          .pipe(delay(1500))
+          .subscribe(
+            (res) => {
+              this.listingSubject.next(res.properties);
+              this.loadingSubject.next(false);
+            },
+            (error) => {
+              console.error("Error fetching listings", error);
+              this.listingSubject.next(null);
+              this.loadingSubject.next(false);
+            }
+          );
+      } catch (error) {
+        console.error('Error in the try block', error);
+        this.loadingSubject.next(false);
+      }
+    }
+  }
+  
 }
