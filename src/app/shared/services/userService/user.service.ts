@@ -35,7 +35,7 @@ export class UserService {
         const decoded: any = jwtDecode(token);
         const userId = decoded.sub;
   
-        this.getUserById(userId).subscribe(
+        this.getUserById(userId).pipe(delay(2000)).subscribe(
           (response) => {
             this.userSubject.next({
               id: response.user_id,

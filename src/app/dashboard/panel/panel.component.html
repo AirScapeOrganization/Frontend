@@ -1,2 +1,42 @@
-<app-navbar></app-navbar>
-<p>panel works!</p>
+<app-navbar #navbar></app-navbar>
+<div *ngIf="loading && !user" class="w-full flex justify-center items-center h-screen">
+    <p class="text-lg font-bold">Loading...</p>
+</div>
+<main class="mx-5">
+    <div *ngIf="user && !loading" class="user-info my-4">
+      <h1 class="text-xl font-bold">Welcome, {{ user.username }}!</h1>
+      <p>These are all the functions you have as an {{user.role}}</p>
+    </div>
+    <section *ngIf="user?.role === 'Owner' " class="access-button my-5">
+      <a class="settings-access">
+        <h2 class="font-bold text-xl">Settings</h2>
+        <ul class="text-xs">
+          <li><fa-icon [icon]="faAngleRight"></fa-icon> Profile</li>
+          <li><fa-icon [icon]="faAngleRight"></fa-icon> Privacity and security</li>
+          <li><fa-icon [icon]="faAngleRight"></fa-icon> Notifications</li>
+        </ul>
+      </a>
+      <a class="messages-access">
+        <h2 class="font-bold text-xl">Messages</h2>
+        <p>Check the messages you have received</p>
+      </a>
+      <a class="new-propertie">
+        <h2 class="font-bold text-xl">Create a new property</h2>
+        <p>Create a new property to book</p>
+      </a>
+      <a class="show-propertie">
+        <h2 class="font-bold text-xl">Your properties</h2>
+        <p>View information about your properties such as reservations, availability and invoices</p>
+      </a>
+      <a class="help-access">
+        <h2>Need Help?</h2>
+        <p>Click here to consult frequently asked questions and answers</p>
+      </a>
+      <a class="owners-access">
+        <h2>Our Users</h2>
+        <p>Find users to share your properties and reserve them</p>
+      </a>
+    </section>
+  </main>
+  
+<app-footer></app-footer>

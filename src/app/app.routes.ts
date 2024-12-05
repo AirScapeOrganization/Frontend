@@ -14,7 +14,7 @@ export const routes: Routes = [
   {
     path: 'owners',
     loadComponent: () =>
-      import('./owners/owners.component').then((c) => c.OwnersComponent),
+      import('./dashboard/owners/owners.component').then((c) => c.OwnersComponent),
   },
   {
     path: 'blog',
