@@ -1,0 +1,76 @@
+.add-property-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 5vh;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.add-property-container form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1vh;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.description {
+  grid-area: 4 / 1 / 5 / 3;
+}
+
+.image-container {
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.image-upload {
+  margin-bottom: 15px;
+}
+
+.image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.image-preview img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.card-actions {
+  display: flex;
+  padding: 10px;
+  gap: 15px;
+
+
+}
+
+button {
+  padding: 1.5vh .5vh
+}
+
+.save:hover {
+  background-color: rgb(255, 162, 40);
+}
+
+
+input,
+textarea {
+  border: 1px solid rgba(0, 0, 0, 0.315);
+  border-radius: 5px;
+  padding: 5px;
+  width: 100%;
+}

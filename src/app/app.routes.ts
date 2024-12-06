@@ -50,6 +50,13 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'panel/create-property',
+    loadComponent: () =>
+      import('./dashboard/add-property/add-property.component').then((c) => c.AddPropertyComponent),
+    canActivate: [AuthGuard],
+  },
+  
+  {
     path: 'error',
     title: 'Page not found 404',
     loadComponent: () =>
