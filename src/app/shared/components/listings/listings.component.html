@@ -14,7 +14,17 @@
             <fa-icon [icon]="faTags"></fa-icon>
           </p>
         </div>
-  
+
+         <div class="flex justify-center">
+          <img 
+
+            [src]="item.photo_url" 
+            alt="Property Image" 
+            class="w-full h-40 object-cover rounded-md" 
+          />
+        </div>
+
+
         <p class="line-clamp-4 text-sm text-gray-700">
           {{ item.description }}
         </p>
@@ -29,7 +39,7 @@
         </div>
   
         <div class="flex justify-between">
-          <p class="text-sm text-gray-600">
+          <p class="text-sm text-gray-600"> 
             <fa-icon [icon]="faPeopleGroup"></fa-icon> {{ item.max_guests }} Guests
           </p>
           <div *ngIf="user?.role === 'Tenant'">
