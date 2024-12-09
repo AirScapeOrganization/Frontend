@@ -3,20 +3,24 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { FooterComponent } from '../../shared/components/footer/footer.component';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-property',
   standalone: true,
   imports: [
-    NavbarComponent, FooterComponent, CommonModule, ReactiveFormsModule
+    NavbarComponent, FooterComponent, CommonModule, ReactiveFormsModule, FormsModule
   ],
   templateUrl: './add-property.component.html',
   styleUrls: ['./add-property.component.css'],
 })
 export class AddPropertyComponent {
   propertyForm: FormGroup;
-  images: string[] = []; // Array para almacenar las rutas de las imágenes
+  images: string[] = [];
+  startDate: string = '';  
+  endDate: string = '';   
+  currentDate: string = new Date().toISOString().split('T')[0];
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.propertyForm = this.fb.group({

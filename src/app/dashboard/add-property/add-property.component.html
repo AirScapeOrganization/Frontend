@@ -53,6 +53,26 @@
     <div class="image-preview">
       <img *ngFor="let image of images" [src]="image" alt="Preview" />
     </div>
+     
+  <div class="date-fields">
+    <label for="dateStart">Start Date:</label>
+    <input 
+      type="date" 
+      id="dateStart" 
+      [(ngModel)]="startDate" 
+      [min]="currentDate" 
+    />
+    
+    <label for="dateEnd">End Date:</label>
+    <input 
+      type="date" 
+      id="dateEnd" 
+      [(ngModel)]="endDate" 
+      [min]="currentDate" 
+    />
   </div>
-</main>
+</div>
+  </main>
+  
+
 <app-footer></app-footer>
