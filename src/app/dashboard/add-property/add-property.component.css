@@ -18,7 +18,16 @@
 
 .description {
   grid-area: 4 / 1 / 5 / 3;
+  max-height: 150px; 
+  overflow-y: auto;  /* Agrega scroll cuando se sobrepasa */
 }
+
+textarea {
+  resize: none;  
+  width: 100%;    
+  height: auto;   
+}
+
 
 .image-container {
 
@@ -33,6 +42,11 @@
 
 .image-upload {
   margin-bottom: 15px;
+   font-weight: bold;
+  color: black
+  padding: 0.5em;
+  border: thin solid grey;
+  border-radius: 3px;
 }
 
 .image-preview {

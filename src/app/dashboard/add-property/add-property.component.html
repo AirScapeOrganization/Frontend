@@ -36,8 +36,16 @@
 
     <div class="flex flex-col description">
       <label for="description">Description</label>
-      <textarea id="description" formControlName="description" rows="3" style="border-radius: 5px;"></textarea>
+        <textarea 
+          id="description" 
+          formControlName="description" 
+          rows="3" 
+          style="border-radius: 5px;" 
+          maxlength="500" 
+          minlength="10">
+        </textarea>
     </div>
+
 
     <button class="bg-orange-500 save rounded-lg text-white">Save information</button>
     <button class="bg-black text-white rounded-lg">Cancel information</button>
