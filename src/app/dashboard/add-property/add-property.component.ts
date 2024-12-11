@@ -24,13 +24,15 @@ export class AddPropertyComponent {
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.propertyForm = this.fb.group({
-      propertyName: ['', Validators.required],
-      address: ['', Validators.required],
-      country: ['', Validators.required],
-      price: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      rooms: ['', [Validators.required, Validators.min(1)]],
-      bathrooms: ['', [Validators.required, Validators.min(1)]],
-      description: [''],
+      propertyName: [''],
+      address: ['', Validators.required,Validators.minLength(10), Validators.maxLength(20)],
+      latitude: ['', Validators.required, Validators.min(1), Validators.max(1000)],
+      longitude: ['', Validators.required, Validators.min(1), Validators.max(1000)],
+      price: ['', [Validators.required, Validators.min(50), Validators.max(1000000)]],
+      rooms: ['', [Validators.required, Validators.min(1), Validators.max(10)]],
+      max_guests: ['', [Validators.required, Validators.min(1), Validators.max(10)]],
+      bathrooms: ['', [Validators.required, Validators.min(1), Validators.max(10) ]],
+      description: ['', [Validators.minLength(10), Validators.maxLength(500)]],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
     });
