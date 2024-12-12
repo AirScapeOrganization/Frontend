@@ -1,0 +1,143 @@
+.property-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.property-description {
+  flex: 1 1 50%;
+}
+
+.property-description h2 {
+  margin-bottom: 15px; 
+}
+
+.property-description p {
+  margin-bottom: 15px; 
+}
+
+.details {
+  margin-bottom: 15px; 
+}
+
+.detail-item {
+  padding: 10px;
+}
+.owner {
+  display: flex;
+  align-items: center; 
+}
+
+.owner-avatar {
+  width: 30px; 
+  height: 30px; 
+  border-radius: 50%; 
+  overflow: hidden; 
+  margin-right: 10px; 
+}
+
+.owner-avatar img {
+  width: 100%; 
+  height: 100%;
+  object-fit: cover; 
+}
+
+.owner span,
+.owner p {
+  margin: 0; /* Elimina márgenes innecesarios */
+}
+
+
+.property-image {
+  flex: 1 1 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%; 
+  height: 320px; 
+  overflow: hidden; 
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  border-radius: 8px;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.left-arrow {
+  left: 10px;
+}
+
+.right-arrow {
+  right: 10px;
+}
+
+.date-picker {
+  display: flex; 
+  gap: 20px; 
+  margin-top: 15px;
+  flex-direction: row; 
+  align-items: center;
+}
+
+.date-picker label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.date-picker p {
+  font-size: 14px;
+  margin: 0; 
+}
+.address-picker {
+  display: flex; 
+  gap: 20px; 
+  margin-top: 15px;
+  flex-direction: row; 
+  align-items: center;
+}
+
+.address-picker label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.address-picker p {
+  font-size: 14px;
+  margin: 0; 
+}
+
+
+
+h2 {
+  font-size: 25px;
+  color: black;
+}

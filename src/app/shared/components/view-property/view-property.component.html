@@ -1,1 +1,56 @@
-<p>view-property works!</p>
+<app-navbar></app-navbar>
+
+<div class="property-container">
+  <div class="property-description">
+    <h2>Incredible lake house: Chef Kitchen and the jacuzzi</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+    <div class="details">
+      <span class="detail-item">
+        <i class="fa fa-users"></i><strong>10</strong> Guest
+      </span>
+      <span class="detail-item">
+        <i class="fa fa-bed"></i><strong>4</strong> Rooms
+      </span>
+      <span class="detail-item">
+        <i class="fa fa-bath"></i><strong>2</strong> Bathrooms
+      </span>
+    </div>
+    <div class="owner">
+  <div class="owner-avatar">
+    <img src="https://media.istockphoto.com/id/1386479313/es/foto/feliz-mujer-de-negocios-afroamericana-millennial-posando-aislada-en-blanco.jpg?s=612x612&w=0&k=20&c=JP0NBxlxG2-bdpTRPlTXBbX13zkNj0mR5g1KoOdbtO4=" alt="Owner Photo" />
+  </div>
+  <span>Owner</span>
+  <p>Marta Delgado Pérez</p>
+</div>
+
+  </div>
+
+  <div class="property-image">
+    <div class="image-container">
+      <img
+        [src]="imageUrls[currentImageIndex]"
+        alt="Property Image"
+        class="main-image"
+      />
+      <button (click)="previousImage()" class="arrow left-arrow">
+        &#10094;
+      </button>
+      <button (click)="nextImage()" class="arrow right-arrow">
+        &#10095;
+      </button>
+    </div>
+    <div class="date-picker">
+  <label for="startDate">Start Date:</label>
+  <p id="startDate">{{ startDate }}</p>
+
+  <label for="endDate">End Date:</label>
+  <p id="endDate">{{ endDate }}</p>
+</div>
+ <div class="address-picker">
+  <label for="address">Address:</label>
+  <p id="address">CI. 12 #11a-51, Villa de Leyva, Centro</p>
+</div>
+  </div>
+</div>
+
+<app-footer></app-footer>
