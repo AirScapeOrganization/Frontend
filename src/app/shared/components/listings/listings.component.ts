@@ -36,7 +36,7 @@ export class ListingsComponent {
   }
 
   trackByListingId(index: number, item: Listing): any {
-    return item.listing_id;
+    return item.id;
   }
 
 }

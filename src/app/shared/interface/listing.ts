@@ -1,5 +1,5 @@
 export interface Listing {
-    listing_id: number;
+    id: number;
     title: string;
     price_per_night: string;
     description: string;

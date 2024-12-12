@@ -43,10 +43,10 @@
             <fa-icon [icon]="faPeopleGroup"></fa-icon> {{ item.max_guests }} Guests
           </p>
           <div *ngIf="user?.role === 'Tenant'">
-            <a routerLink="/views/{{item.listing_id}}" class="py-1 px-2 bg-orange-500 cursor-pointer text-white rounded-lg text-sm">Reserve</a>
+            <a [routerLink]="['/views', item.id]" class="py-1 px-2 bg-orange-500 cursor-pointer text-white rounded-lg text-sm">Reserve</a>
           </div>
           <div *ngIf="user?.role === 'Owner'">
-            <a routerLink="/view/{{item.listing_id}}" class="py-1 px-2 bg-orange-500 cursor-pointer text-white rounded-lg text-sm">View</a>
+            <a [routerLink]="['/views', item.id]" class="py-1 px-2 bg-orange-500 cursor-pointer text-white rounded-lg text-sm">View</a>
           </div>
         </div>
       </div>

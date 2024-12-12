@@ -56,6 +56,13 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   
+{
+  path: 'views/:id', 
+  title: 'Reserve Property',
+  loadComponent: () =>
+    import('./shared/components/view-property/view-property.component').then((c) => c.ViewPropertyComponent),
+},
+
   {
     path: 'error',
     title: 'Page not found 404',
