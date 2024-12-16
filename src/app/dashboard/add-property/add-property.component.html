@@ -109,14 +109,19 @@
 
   </form>
 
-  <div class="image-container">
-    <div class="image-upload bg-blend-darken">
-      <label for="imageUpload">Insert Images</label>
-      <input type="file" id="imageUpload" (change)="onImageUpload($event)" multiple />
+ <div class="image-container">
+  <div class="image-upload bg-blend-darken">
+    <label for="imageUpload">Insert Images</label>
+    <input type="file" id="imageUpload" (change)="onImageUpload($event)" multiple />
+  </div>
+
+  <div class="image-preview">
+    <div *ngFor="let image of images; let i = index" class="image-wrapper">
+      <img [src]="image" alt="Preview" />
+      <button class="delete-btn" type="button" (click)="removeImage(i)">X</button>
     </div>
-    <div class="image-preview">
-      <img *ngFor="let image of images" [src]="image" alt="Preview" />
-    </div>
+  </div>
+
 
     <div class="date-fields">
       <label for="dateStart">Start Date:</label>

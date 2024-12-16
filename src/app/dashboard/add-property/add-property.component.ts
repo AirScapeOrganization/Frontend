@@ -48,16 +48,20 @@ export class AddPropertyComponent {
     this.router.navigate(['/dashboard']);
   }
 
-  onImageUpload(event: any) {
-    const files = event.target.files;
-    if (files) {
-      for (const file of files) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.images.push(e.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
+ onImageUpload(event: any) {
+  const files = event.target.files;
+  if (files) {
+    for (const file of files) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.images.push(e.target.result);
+      };
+      reader.readAsDataURL(file);
     }
   }
+}
+removeImage(index: number) {
+  this.images.splice(index, 1);
+}
+
 }
