@@ -14,6 +14,7 @@ import { AuthGuard } from './auth/guards/auth.guard';
 import { PanelComponent } from './dashboard/panel/panel.component';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { NotificationsComponent } from './dashboard/notifications/notifications.component';
+import { PropertyComponent } from './property/property.component';
 
 export const routes: Routes = [
   {
@@ -22,7 +23,12 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
-      { path: 'explore', component: ExplorerComponent },
+      { path: 'explore',
+        children: [
+          { path: '', component: ExplorerComponent },
+          { path: 'view/:id', component: PropertyComponent },
+        ]
+        },
       { path: 'contact', component: ContactComponent },
       { path: 'blog', component: BlogComponent },
       { path: 'help', component: HelpComponent },

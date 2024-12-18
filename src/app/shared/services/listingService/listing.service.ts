@@ -51,5 +51,13 @@ export class ListingService {
       }
     }
   }
+
+  getListingById(id: number): Observable<Listing> {
+    return this.http.get<Listing>(`${environment.ApiUrl}listings/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      }
+    });
+  }
   
 }

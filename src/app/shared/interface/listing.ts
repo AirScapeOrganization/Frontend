@@ -1,11 +1,15 @@
 export interface Listing {
     id: number;
     title: string;
-    price_per_night: string;
     description: string;
     address: string;
-    num_bathrooms: number;
+    latitude: number;
+    longitude: number;
+    price_per_night: number;
     num_bedrooms: number;
+    num_bathrooms: number;
     max_guests: number;
+    user_id: number;
     photo_url: string;
-}
+  }
+  
