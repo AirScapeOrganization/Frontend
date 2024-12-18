@@ -1,0 +1,116 @@
+.container-input {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+input,
+label {
+    width: 100%;
+}
+
+form label {
+    font-weight: bold;
+}
+
+.input-field {
+    border: 1px solid #ddd;
+    padding: 12px 16px;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+.input-field:focus {
+    border-color: #f77800;
+    box-shadow: 0 0 5px rgba(247, 119, 0, 0.225);
+}
+
+.btns-form {
+    margin: 3vh 0;
+}
+
+.btns-form button {
+    padding: 1.3vh 2vh;
+    border-radius: 1vh;
+}
+
+.btns-form button:nth-child(1) {
+    border: .1rem solid #f77800;
+}
+
+.btns-form button:nth-child(1):hover {
+    background-color: #f77800;
+    color: white;
+}
+
+.btns-form button:nth-child(2) {
+    border: .1rem solid #f71000;
+}
+
+.btns-form button:nth-child(2):hover {
+    background-color: #f71000;
+    color: white;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+input {
+    padding: 12px 16px;
+    margin-top: 4px;
+}
+
+label {
+    margin-bottom: 4px;
+}
+
+textarea {
+    border: 1px solid #ddd;
+    padding: 12px 16px;
+    border-radius: 8px;
+    outline: none;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+textarea:focus {
+    border-color: #f77800;
+    box-shadow: 0 0 10px rgba(247, 120, 0, 0.5);
+}
+
+a {
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #f77800;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 20px;
+    }
+
+    section {
+        padding: 16px;
+    }
+
+    .input-field {
+        padding: 10px 14px;
+    }
+
+    .w-full {
+        width: 100%;
+    }
+
+
+    .flex-col {
+        flex-direction: column;
+    }
+}

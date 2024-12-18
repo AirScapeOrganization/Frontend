@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, delay, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../../interface/user';
@@ -10,11 +10,10 @@ import { User } from '../../interface/user';
 })
 
 export class UserService {
-  private userSubject = new BehaviorSubject<User | null>(null);
+  public userSubject = new BehaviorSubject<User | null>(null);
+  user$ = this.userSubject.asObservable();
   private loadingSubject = new BehaviorSubject<boolean>(false);
-
-  public user$ = this.userSubject.asObservable();
-  public loading$ = this.loadingSubject.asObservable();
+  loading$ = this.loadingSubject.asObservable();
 
   constructor(private http: HttpClient) {
     this.loadUserFromToken();
@@ -35,12 +34,15 @@ export class UserService {
         const decoded: any = jwtDecode(token);
         const userId = decoded.sub;
   
-        this.getUserById(userId).pipe(delay(2000)).subscribe(
+        this.getUserById(userId).subscribe(
           (response) => {
             this.userSubject.next({
-              id: response.user_id,
+              user_id: response.user_id,
               username: response.username,
+              email: response.email,
               role: response.role,
+              bio: response.bio,
+              password: response.password
             });
             this.loadingSubject.next(false);
           },
@@ -85,6 +87,15 @@ export class UserService {
     this.userSubject.next(null);
     this.loadingSubject.next(false);
   }
+
+  updateUser(userId: number, updatedData: Partial<User>): Observable<any> {
+    return this.http.put(`${environment.ApiUrl}user/${userId}`, updatedData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`
+      }
+    });
+  }
+  
 
 }
   

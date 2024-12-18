@@ -1,65 +1,53 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { ExplorerComponent } from './explorer/explorer.component';
+import { RouterModule } from '@angular/router';
+import { UserResolver } from './shared/services/userResolver/user.resolver';
+import { ErrorComponent } from './shared/pages/error/error.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { BlogComponent } from './shared/pages/blog/blog.component';
+import { ContactComponent } from './shared/pages/contact/contact.component';
+import { HelpComponent } from './shared/pages/help/help.component';
 import { AuthGuard } from './auth/guards/auth.guard';
+import { PanelComponent } from './dashboard/panel/panel.component';
+import { ProfileComponent } from './dashboard/profile/profile.component';
+import { NotificationsComponent } from './dashboard/notifications/notifications.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
   {
-    path: 'explore',
-    title: 'Explore in AirScape',
-    loadComponent: () =>
-      import('./explorer/explorer.component').then((c) => c.ExplorerComponent),
+    path: '',
+    resolve: { user: UserResolver },
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent },
+      { path: 'explore', component: ExplorerComponent },
+      { path: 'contact', component: ContactComponent },
+      { path: 'blog', component: BlogComponent },
+      { path: 'help', component: HelpComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
+      { path: 'error', component: ErrorComponent},
+      {
+        path: 'panel', 
+        canActivate: [AuthGuard],
+        children: [
+          { path: '', redirectTo: 'panel', pathMatch: 'full' },
+          { path: '', component: PanelComponent },
+          { path: 'profile', component: ProfileComponent },
+          { path: 'notifications', component: NotificationsComponent}
+        ]
+       },
+      { path: '**', redirectTo: '/error' },
+    ],
   },
-  {
-    path: 'owners',
-    loadComponent: () =>
-      import('./dashboard/owners/owners.component').then((c) => c.OwnersComponent),
-  },
-  {
-    path: 'blog',
-    loadComponent: () =>
-      import('./shared/pages/blog/blog.component').then((c) => c.BlogComponent),
-  },
-  {
-    path: 'contact',
-    loadComponent: () =>
-      import('./shared/pages/contact/contact.component').then((c) => c.ContactComponent),
-  },
-  {
-    path: 'help',
-    loadComponent: () =>
-      import('./shared/pages/help/help.component').then((c) => c.HelpComponent),
-  },
-  {
-    path: 'login',
-    title: 'Log in to your account',
-    loadComponent: () =>
-      import('./auth/login/login.component').then((c) => c.LoginComponent),
-  },
-  {
-    path: 'register',
-    title: 'Register to access content',
-    loadComponent: () =>
-      import('./auth/register/register.component').then((c) => c.RegisterComponent),
-  },
-  {
-    path: 'panel',
-    loadComponent: () =>
-      import('./dashboard/panel/panel.component').then((c) => c.PanelComponent),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'error',
-    title: 'Page not found 404',
-    loadComponent: () =>
-      import('./shared/pages/error/error.component').then((c) => c.ErrorComponent),
-  },
-  { path: '**', redirectTo: '/error' }, 
+
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
+
 export class AppRoutingModule {}

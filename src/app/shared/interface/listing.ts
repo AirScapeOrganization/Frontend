@@ -1,5 +1,5 @@
 export interface Listing {
-    listing_id: number;
+    id: number;
     title: string;
     price_per_night: string;
     description: string;
@@ -7,4 +7,5 @@ export interface Listing {
     num_bathrooms: number;
     num_bedrooms: number;
     max_guests: number;
+    photo_url: string;
 }

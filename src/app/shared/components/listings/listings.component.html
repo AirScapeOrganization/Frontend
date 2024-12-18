@@ -1,7 +1,5 @@
 <div *ngIf="listingService.loading$ | async; else listings">
-    <div class="absolute h-screen w-screen flex justify-center items-center z-200 bg-white">
-        <p class="font-bold text-lg">Loading properties...</p>
-    </div>
+    
 </div>
 
 <ng-template #listings>
@@ -13,6 +11,10 @@
             {{ item.price_per_night }} $
             <fa-icon [icon]="faTags"></fa-icon>
           </p>
+        </div>
+
+        <div class="flex justify-center">
+          <img [src]="item.photo_url" alt="Property Image" class="w-full h-40 object-cover rounded-sm">
         </div>
   
         <p class="line-clamp-4 text-sm text-gray-700">
@@ -33,10 +35,10 @@
             <fa-icon [icon]="faPeopleGroup"></fa-icon> {{ item.max_guests }} Guests
           </p>
           <div *ngIf="user?.role === 'Tenant'">
-            <a routerLink="/views/{{item.listing_id}}" class="py-1 px-2 bg-orange-500 cursor-pointer text-white rounded-lg text-sm">Reserve</a>
+            <a [routerLink]="['/views', item.id]" class="py-1 px-2 bg-orange-500 cursor-pointer text-white rounded-lg text-sm">Reserve</a>
           </div>
           <div *ngIf="user?.role === 'Owner'">
-            <a routerLink="/view/{{item.listing_id}}" class="py-1 px-2 bg-orange-500 cursor-pointer text-white rounded-lg text-sm">View</a>
+            <a [routerLink]="['/views', item.id]" class="py-1 px-2 bg-orange-500 cursor-pointer text-white rounded-lg text-sm">View</a>
           </div>
         </div>
       </div>

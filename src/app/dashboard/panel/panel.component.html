@@ -1,4 +1,3 @@
-<app-navbar #navbar></app-navbar>
 <div *ngIf="loading && !user" class="w-full flex justify-center items-center h-screen">
     <p class="text-lg font-bold">Loading...</p>
 </div>
@@ -8,7 +7,7 @@
       <p>These are all the functions you have as an {{user.role}}</p>
     </div>
     <section *ngIf="user?.role === 'Owner' " class="access-button my-5">
-      <a class="settings-access">
+      <a class="settings-access" routerLink="/panel/profile">
         <h2 class="font-bold text-xl">Settings</h2>
         <ul class="text-xs">
           <li><fa-icon [icon]="faAngleRight"></fa-icon> Profile</li>
@@ -38,5 +37,3 @@
       </a>
     </section>
   </main>
-  
-<app-footer></app-footer>
