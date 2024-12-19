@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ListingService } from '../../shared/services/listingService/listing.service';
+import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { FooterComponent } from '../../shared/components/footer/footer.component';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-property',
@@ -15,53 +17,127 @@ import { Router } from '@angular/router';
   templateUrl: './add-property.component.html',
   styleUrls: ['./add-property.component.css'],
 })
-export class AddPropertyComponent {
+export class AddPropertyComponent implements OnInit {
   propertyForm: FormGroup;
-  images: string[] = [];
-  startDate: string = '';  
-  endDate: string = '';   
-  currentDate: string = new Date().toISOString().split('T')[0];
+  images: File[] = [];
+  imagePreviews: string[] = [];
+  
+  property: any = {}; 
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private listingService: ListingService,
+    private router: Router
+  ) {
     this.propertyForm = this.fb.group({
-      propertyName: [''],
-      address: ['', Validators.required,Validators.minLength(10), Validators.maxLength(20)],
-      latitude: ['', Validators.required, Validators.min(1), Validators.max(1000)],
-      longitude: ['', Validators.required, Validators.min(1), Validators.max(1000)],
-      price: ['', [Validators.required, Validators.min(50), Validators.max(1000000)]],
-      rooms: ['', [Validators.required, Validators.min(1), Validators.max(10)]],
-      max_guests: ['', [Validators.required, Validators.min(1), Validators.max(10)]],
-      bathrooms: ['', [Validators.required, Validators.min(1), Validators.max(10) ]],
-      description: ['', [Validators.minLength(10), Validators.maxLength(500)]],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      title: ['', Validators.required],
+      address: ['', Validators.required],
+      latitude: ['', Validators.required],
+      longitude: ['', Validators.required],
+      price_per_night: ['', Validators.required],
+      num_bedrooms: ['', Validators.required],
+      num_bathrooms: ['', Validators.required],
+      max_guests: ['', Validators.required],
+      description: ['', Validators.required],
+    });
+  }
+
+  ngOnInit(): void {
+    // Suscribirse a los cambios del formulario
+    this.propertyForm.valueChanges.subscribe((values) => {
+      this.property ={values};
+      console.log(this.property);
+    });
+  }
+
+  logForm(fieldName: string) {
+    console.log(`${fieldName}: `, this.property[fieldName]); 
+  }
+
+  logImages() {
+    this.images.forEach((image, index) => {
+      console.log(`Imagen ${index + 1}: ${image.name}`);
     });
   }
 
   onSubmit() {
-    console.log('Form Data:', this.propertyForm.value);
-    console.log('Uploaded Images:', this.images);
+    console.log("Form Submitted!");
+    this.logForm('title');
+    this.logForm('address');
+    this.logForm('latitude');
+    this.logForm('longitude');
+    this.logForm('price_per_night');
+    this.logForm('num_bedrooms');
+    this.logForm('num_bathrooms');
+    this.logForm('max_guests');
+    this.logForm('description');
+    
+    this.logImages();
+
+    if (this.propertyForm.invalid) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Please fill out all required fields.',
+      });
+      return;
+    }
+
+  
+    const listingData = this.property;
+  
+    this.listingService.addListing(listingData, this.images).subscribe(
+      () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Property Added',
+          text: 'The property has been added successfully.',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        this.router.navigate(['/explore']);
+      },
+      (error) => {
+        let errorMessage = 'Failed to add property. Please try again.';
+        if (error.status === 422) {
+          errorMessage = 'Validation failed. Please check your inputs.';
+        } else if (error.status === 500) {
+          errorMessage = 'Server error. Please contact support.';
+        } else if (error.status === 403) {
+          errorMessage = 'You are not authorized to perform this action.';
+        }
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errorMessage,
+        });
+        console.error('Error adding property:', error);
+      }
+    );
+  }
+
+  onImageUpload(event: any) {
+    const files = event.target.files;
+    if (files) {
+      for (const file of files) {
+        this.images.push(file);
+
+        const imageUrl = URL.createObjectURL(file);
+        this.imagePreviews.push(imageUrl);  
+
+        console.log(`Image uploaded: ${file.name}`);
+      }
+    }
+  }
+
+  removeImage(index: number) {
+    this.images.splice(index, 1);  
+    this.imagePreviews.splice(index, 1);  
+    console.log('Image removed!');
   }
 
   onCancel() {
-    this.propertyForm.reset();
-    this.router.navigate(['/dashboard']);
+    console.log("Cancel clicked!");
   }
-
- onImageUpload(event: any) {
-  const files = event.target.files;
-  if (files) {
-    for (const file of files) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.images.push(e.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-}
-removeImage(index: number) {
-  this.images.splice(index, 1);
-}
-
 }

@@ -7,6 +7,6 @@ export interface Listing {
     num_bathrooms: number;
     num_bedrooms: number;
     max_guests: number;
-    photo_url: string;
+    photo_url: string[];
+    is_owner: 1;
 }
-                

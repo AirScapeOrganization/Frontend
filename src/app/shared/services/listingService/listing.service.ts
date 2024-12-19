@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment.development';
 import { Listing } from '../../interface/listing';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -51,5 +52,44 @@ export class ListingService {
       }
     }
   }
-  
+  addListing(listingData: Partial<Listing>, images: File[]): Observable<any> {
+  const formData = new FormData();
+
+  Object.keys(listingData).forEach((key) => {
+    formData.append(key, listingData[key as keyof Listing] as string);
+  });
+
+  images.forEach((image) => {
+    formData.append('photos[]', image);  
+  });
+
+  console.log('FormData being sent:', formData);
+
+  return this.http.post(`${environment.ApiUrl}listings`, formData, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+    },
+  });
 }
+addPhotos(photo: File): Observable<string> {
+  const formData = new FormData();
+  formData.append('photo', photo);
+
+
+  return this.http.post<{ uploaded_url: string }>(
+    `${environment.ApiUrl}photos`, 
+    formData, 
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    }
+  ).pipe(
+    map(response => response.uploaded_url) // Extraer solo la URL del response
+  );
+}
+
+
+
+  }
+  

@@ -1,145 +1,60 @@
 <app-navbar></app-navbar>
 <main class="add-property-container">
   <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
-
     <div class="flex flex-col">
       <label for="propertyName">Property Name</label>
-      <input type="text" id="propertyName" formControlName="propertyName" required style="border-radius: 5px;" />
+      <input type="text" id="propertyName" formControlName="title" required style="border-radius: 5px;" />
     </div>
-
     <div class="flex flex-col">
       <label for="address">Address</label>
       <input type="text" id="address" formControlName="address" required style="border-radius: 5px;" />
-      <div *ngIf="propertyForm.get('address')?.invalid && propertyForm.get('address')?.touched" class="error">
-        <span class="text-color" *ngIf="propertyForm.get('address')?.hasError('required')">Address is required.</span>
-        <span *ngIf="propertyForm.get('address')?.hasError('minlength')">address must be at least 10.</span>
-        <span *ngIf="propertyForm.get('address')?.hasError('maxlength')">address cannot exceed 20.</span>
-      </div>
     </div>
-
     <div class="flex flex-col">
-      <label for="latitude">latitude</label>
-      <input list="latitude" type="number" id="latitude" formControlName="latitude" required style="border-radius: 5px;" />
-       <div *ngIf="propertyForm.get('latitude')?.invalid && propertyForm.get('latitude')?.touched" class="error">
-        <span class="text-color" *ngIf="propertyForm.get('latitude')?.hasError('required')">Latitude is required.</span>
-        <span *ngIf="propertyForm.get('latitude')?.hasError('min')">latitude must be at least 1.</span>
-        <span *ngIf="propertyForm.get('latitude')?.hasError('max')">latitude cannot exceed 1000.</span>
-      </div>
+      <label for="latitude">Latitude</label>
+      <input type="number" id="latitude" formControlName="latitude" required style="border-radius: 5px;" />
     </div>
-
     <div class="flex flex-col">
       <label for="longitude">Longitude</label>
       <input type="number" id="longitude" formControlName="longitude" required style="border-radius: 5px;" />
-      <div *ngIf="propertyForm.get('longitude')?.invalid && propertyForm.get('longitude')?.touched" class="error">
-        <span class="text-color" *ngIf="propertyForm.get('longitude')?.hasError('required')">Longitude is required.</span>
-        <span *ngIf="propertyForm.get('longitude')?.hasError('min')">longitude must be at least 1.</span>
-        <span *ngIf="propertyForm.get('longitude')?.hasError('max')">longitude cannot exceed 1000.</span>
-      </div>
-
     </div>
-
-
     <div class="flex flex-col">
       <label for="price">Price x Night (COP)</label>
-      <input 
-        type="number" 
-        id="price" 
-        formControlName="price" 
-        required 
-        style="border-radius: 5px;" 
-      />
-      <div *ngIf="propertyForm.get('price')?.invalid && propertyForm.get('price')?.touched" class="error">
-        <span class="text-color" *ngIf="propertyForm.get('price')?.hasError('required')">Price is required.</span>
-        <span *ngIf="propertyForm.get('price')?.hasError('min')">Price must be at least 50 COP.</span>
-        <span *ngIf="propertyForm.get('price')?.hasError('max')">Price cannot exceed 1.000.000 COP.</span>
-      </div>
+      <input type="number" id="price" formControlName="price_per_night" required style="border-radius: 5px;" />
     </div>
-
     <div class="flex flex-col">
       <label for="rooms">Rooms</label>
-      <input type="number" id="rooms" formControlName="rooms" required style="border-radius: 5px;" />
-       <div *ngIf="propertyForm.get('rooms')?.invalid && propertyForm.get('rooms')?.touched" class="error">
-        <span class="text-color" *ngIf="propertyForm.get('rooms')?.hasError('required')">Rooms is required.</span>
-        <span *ngIf="propertyForm.get('rooms')?.hasError('min')">Rooms must be at least 1.</span>
-        <span *ngIf="propertyForm.get('rooms')?.hasError('max')">Rooms cannot exceed 10.</span>
-      </div>
+      <input type="number" id="rooms" formControlName="num_bedrooms" required style="border-radius: 5px;" />
     </div>
-
     <div class="flex flex-col">
       <label for="bathrooms">Bathrooms</label>
-      <input type="number" id="bathrooms" formControlName="bathrooms" required style="border-radius: 5px;" />
-       <div *ngIf="propertyForm.get('bathrooms')?.invalid && propertyForm.get('bathrooms')?.touched" class="error">
-        <span class="text-color" *ngIf="propertyForm.get('bathrooms')?.hasError('required')">Bathrooms is required.</span>
-        <span *ngIf="propertyForm.get('bathrooms')?.hasError('min')">bathrooms must be at least 1.</span>
-        <span *ngIf="propertyForm.get('bathrooms')?.hasError('max')">bathrooms cannot exceed 10.</span>
-      </div>
+      <input type="number" id="bathrooms" formControlName="num_bathrooms" required style="border-radius: 5px;" />
     </div>
-
     <div class="flex flex-col">
-      <label for="max_guests ">Max_guests</label>
+      <label for="max_guests">Max Guests</label>
       <input type="number" id="max_guests" formControlName="max_guests" required style="border-radius: 5px;" />
-      <div *ngIf="propertyForm.get('max_guests')?.invalid && propertyForm.get('max_guests')?.touched" class="error">
-        <span class="text-color" *ngIf="propertyForm.get('max_guests')?.hasError('required')">Guests is required.</span>
-        <span *ngIf="propertyForm.get('max_guests')?.hasError('min')">max_guests must be at least 1.</span>
-        <span *ngIf="propertyForm.get('max_guests')?.hasError('max')">max_guests cannot exceed 10.</span>
-      </div>
-     
     </div>
-
     <div class="flex flex-col description">
       <label for="description">Description</label>
-      <textarea 
-        id="description" 
-        formControlName="description" 
-        rows="3" 
-        style="border-radius: 5px;" 
-        maxlength="500" 
-        required>
-          
-        </textarea>
-      <!-- Mensajes de error para la descripción -->
-      <div *ngIf="propertyForm.get('description')?.invalid && propertyForm.get('description')?.touched" class="error">
-        <span *ngIf="propertyForm.get('description')?.hasError('minlength')">Description must be at least 10 characters.</span>
-        <span *ngIf="propertyForm.get('description')?.hasError('maxlength')">Description cannot exceed 500 characters.</span>
-      </div>
+      <textarea id="description" formControlName="description" rows="3" maxlength="500" required style="border-radius: 5px;"></textarea>
     </div>
-
     <button class="bg-orange-500 save rounded-lg text-white" type="submit">Save information</button>
     <button class="bg-black text-white rounded-lg" type="button" (click)="onCancel()">Cancel information</button>
-
   </form>
 
+ <!-- app.component.html -->
  <div class="image-container">
-  <div class="image-upload bg-blend-darken">
-    <label for="imageUpload">Insert Images</label>
-    <input type="file" id="imageUpload" (change)="onImageUpload($event)" multiple />
-  </div>
+   <div class="image-upload bg-blend-darken">
+     <label for="imageUpload">Insert Images</label>
+     <input type="file" id="imageUpload" (change)="onImageUpload($event)" multiple />
+   </div>
+   <div class="image-preview">
+     <div *ngFor="let image of imagePreviews; let i = index" class="image-wrapper">
+       <img [src]="image" alt="Preview" />
+       <button class="delete-btn" type="button" (click)="removeImage(i)">X</button>
+     </div>
+   </div>
+ </div>
 
-  <div class="image-preview">
-    <div *ngFor="let image of images; let i = index" class="image-wrapper">
-      <img [src]="image" alt="Preview" />
-      <button class="delete-btn" type="button" (click)="removeImage(i)">X</button>
-    </div>
-  </div>
 
-
-    <div class="date-fields">
-      <label for="dateStart">Start Date:</label>
-      <input 
-        type="date" 
-        id="dateStart" 
-        [(ngModel)]="startDate" 
-        [min]="currentDate" 
-      />
-      
-      <label for="dateEnd">End Date:</label>
-      <input 
-        type="date" 
-        id="dateEnd" 
-        [(ngModel)]="endDate" 
-        [min]="currentDate" 
-      />
-    </div>
-  </div>
 </main>
 <app-footer></app-footer>

@@ -57,7 +57,6 @@ textarea {
   margin-top: 10px;
 }
 
-/* Vista previa de imágenes */
 .image-preview {
   display: flex;
   flex-wrap: wrap;
@@ -75,11 +74,12 @@ textarea {
 }
 
 .image-wrapper img {
-  width: 90px;
-  height: 90px;
+  width: 150px; 
+  height: 150px;
   object-fit: cover;
   border-radius: 5px;
 }
+
 
 .image-wrapper .delete-btn {
   position: absolute;
