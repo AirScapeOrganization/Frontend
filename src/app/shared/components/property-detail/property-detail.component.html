@@ -1,6 +1,21 @@
-<div *ngIf="listing">
-  <h1>{{ listing.title }}</h1>
-  <p>{{ listing.description }}</p>
-  <p>{{ listing.address }}</p>
-  <p>Price per night: {{ listing.price_per_night }}</p>
-</div>
+<main class="flex justify-around" *ngIf="listing">
+  <section class="w-6/12 flex flex-col gap-4">
+    <h1 class="font-bold text-3xl">{{ listing.title }}</h1>
+    <p class="line-clamp-3">{{ listing.description }}</p>
+    <div class="flex gap-5">
+        <p><fa-icon [icon]="faUser" class="navbar-icon"></fa-icon> {{listing.max_guests}} Guest</p>
+        <p><fa-icon [icon]="faDoorOpen" class="navbar-icon"></fa-icon> {{listing.num_bedrooms}} Rooms</p>
+        <p><fa-icon [icon]="faBath" class="navbar-icon"></fa-icon> {{listing.num_bathrooms}} Bathrooms</p>
+    </div>
+ 
+    <button class="p-2 bg-orange-500 text-white rounded-lg">Reserve</button>
+  </section>
+  <section class="flex flex-col">
+    <div class="img">
+      <img [src]="listing.photo_url" alt="">
+    </div>
+    <div>
+      <h1>{{ listing.price_per_night }} $ / night </h1>
+    </div>
+  </section>
+</main>

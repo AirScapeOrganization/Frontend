@@ -34,16 +34,21 @@ export class UserService {
         const decoded: any = jwtDecode(token);
         const userId = decoded.sub;
   
+        const userFromToken = {
+          user_id: decoded.sub,
+          username: decoded.username,
+          role: decoded.role,
+        };
+  
+        this.userSubject.next(userFromToken);
         this.getUserById(userId).subscribe(
           (response) => {
-            this.userSubject.next({
+            const fullUserDetails = {
+              ...response,
               user_id: response.user_id,
-              username: response.username,
-              email: response.email,
-              role: response.role,
-              bio: response.bio,
-              password: response.password
-            });
+            };
+            this.userSubject.next(fullUserDetails);
+  
             this.loadingSubject.next(false);
           },
           (error) => {
@@ -62,7 +67,7 @@ export class UserService {
       this.loadingSubject.next(false);
     }
   }
-
+  
   getUserFromToken(token: string): any | null {
     try {
       const decoded: any = jwtDecode(token);
@@ -95,7 +100,5 @@ export class UserService {
       }
     });
   }
-  
-
 }
   

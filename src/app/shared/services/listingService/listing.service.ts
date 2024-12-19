@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, delay, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment.development';
 import { Listing } from '../../interface/listing';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class ListingService {
   private listingSubject = new BehaviorSubject<Listing[] | null>(null);
   private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -16,9 +15,9 @@ export class ListingService {
   public listing$ = this.listingSubject.asObservable();
   public loading$ = this.loadingSubject.asObservable();
 
-  constructor(private http: HttpClient) {
-    this.getAllListings();
-  }
+  private cacheKey = 'cachedListings';
+
+  constructor(private http: HttpClient) {}
 
   getAllListings(): void {
     if (typeof localStorage === 'undefined') {
@@ -26,38 +25,27 @@ export class ListingService {
       this.loadingSubject.next(false);
       return;
     }
-  
-    const token = localStorage.getItem('authToken');
+
     this.loadingSubject.next(true);
-  
-    if (token) {
-      try {
-        this.http.get<{ properties: Listing[] }>(environment.ApiUrl + 'listings')
-          .pipe(delay(1500))
-          .subscribe(
-            (res) => {
-              this.listingSubject.next(res.properties);
-              this.loadingSubject.next(false);
-            },
-            (error) => {
-              console.error("Error fetching listings", error);
-              this.listingSubject.next(null);
-              this.loadingSubject.next(false);
-            }
-          );
-      } catch (error) {
-        console.error('Error in the try block', error);
-        this.loadingSubject.next(false);
-      }
-    }
+
+    this.http
+      .get<{ properties: Listing[] }>(`${environment.ApiUrl}listings`)
+      .pipe(
+        tap((res) => {
+          localStorage.setItem(this.cacheKey, JSON.stringify(res.properties));
+          this.listingSubject.next(res.properties);
+        }),
+        catchError((error) => {
+          console.error('Error fetching listings:', error);
+          this.listingSubject.next(null);
+          return of(null);
+        }),
+        tap(() => this.loadingSubject.next(false))
+      )
+      .subscribe();
   }
 
   getListingById(id: number): Observable<Listing> {
-    return this.http.get<Listing>(`${environment.ApiUrl}listings/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-      }
-    });
+    return this.http.get<Listing>(`${environment.ApiUrl}listings/${id}`);
   }
-  
 }
