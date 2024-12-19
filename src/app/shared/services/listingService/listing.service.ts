@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, delay, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { Listing } from '../../interface/listing';
+import { map } from 'rxjs'
 
 
 
@@ -71,21 +72,16 @@ export class ListingService {
     },
   });
 }
-addPhotos(photo: File): Observable<string> {
+addPhotos(image: File): Observable<string> {
   const formData = new FormData();
-  formData.append('photo', photo);
+  formData.append('photo', image);
 
-
-  return this.http.post<{ uploaded_url: string }>(
-    `${environment.ApiUrl}photos`, 
-    formData, 
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-      },
-    }
-  ).pipe(
-    map(response => response.uploaded_url) // Extraer solo la URL del response
+  return this.http.post<{ uploaded_url: string }>(`${environment.ApiUrl}photos`, formData, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+    },
+  }).pipe(
+    map((response) => response.uploaded_url) // Extract the URL from the response
   );
 }
 

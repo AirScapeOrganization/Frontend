@@ -118,18 +118,26 @@ export class AddPropertyComponent implements OnInit {
   }
 
   onImageUpload(event: any) {
-    const files = event.target.files;
-    if (files) {
-      for (const file of files) {
-        this.images.push(file);
-
-        const imageUrl = URL.createObjectURL(file);
-        this.imagePreviews.push(imageUrl);  
-
-        console.log(`Image uploaded: ${file.name}`);
-      }
+  const files = event.target.files;
+  if (files) {
+    for (const file of files) {
+      this.listingService.addPhotos(file).subscribe(
+        (uploadedUrl) => {
+          this.imagePreviews.push(uploadedUrl); // Add the Supabase URL to the preview list
+          console.log(`Image uploaded: ${file.name}, URL: ${uploadedUrl}`);
+        },
+        (error) => {
+          console.error('Error uploading image:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Upload Failed',
+            text: 'Failed to upload image. Please try again.',
+          });
+        }
+      );
     }
   }
+}
 
   removeImage(index: number) {
     this.images.splice(index, 1);  
