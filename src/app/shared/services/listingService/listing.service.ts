@@ -15,8 +15,6 @@ export class ListingService {
   public listing$ = this.listingSubject.asObservable();
   public loading$ = this.loadingSubject.asObservable();
 
-  private cacheKey = 'cachedListings';
-
   constructor(private http: HttpClient) {}
 
   getAllListings(): void {
@@ -32,7 +30,6 @@ export class ListingService {
       .get<{ properties: Listing[] }>(`${environment.ApiUrl}listings`)
       .pipe(
         tap((res) => {
-          localStorage.setItem(this.cacheKey, JSON.stringify(res.properties));
           this.listingSubject.next(res.properties);
         }),
         catchError((error) => {
@@ -52,7 +49,7 @@ export class ListingService {
   addPhotos(image: File): Observable<string> {
     const formData = new FormData();
     formData.append('photo', image);
-  
+
     const token = localStorage.getItem('authToken');
     
     return this.http.post<{ uploaded_url: string }>(
@@ -67,15 +64,39 @@ export class ListingService {
       map((response) => response.uploaded_url)
     );
   }
-  
+
   addListing(listingData: FormData): Observable<any> {
     const token = localStorage.getItem('authToken');
+    if (!token) {
+      throw new Error('Authentication token is missing');
+    }
 
-    return this.http.post(`${environment.ApiUrl}listings`, listingData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    });
+    const user = this.decodeToken(token);
+    console.log('Decoded token:', user);
+
+    const userId = user?.sub;
+
+    if (!userId) {
+      throw new Error('User ID not found in token');
+    }
+
+    listingData.append('user_id', userId);
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    return this.http.post(`${environment.ApiUrl}listings`, listingData, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error adding property:', error);
+        return of({ message: 'Error adding property', error });
+      })
+    );
   }
 
+  private decodeToken(token: string): any {
+    const payload = token.split('.')[1];
+    const decoded = atob(payload);
+    return JSON.parse(decoded); 
+  }
 }

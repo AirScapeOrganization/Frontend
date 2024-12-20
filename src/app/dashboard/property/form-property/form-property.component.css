@@ -1,0 +1,141 @@
+/* General form styles */
+form {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    border-radius: 10px;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: 0 auto; 
+    padding: 20px;
+}
+
+.container_input {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+    width: 100%;
+}
+
+.container_input > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.container_description {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 2vh 0;
+}
+
+.container_btns button {
+    padding: 12px 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    width: 100%;
+}
+
+.container_btns button:hover {
+    background-color: #d24d00;
+}
+
+.container_btns .cancel-btn {
+    background-color: #333;
+}
+
+label {
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+
+textarea, input {
+    border-radius: 5px;
+    padding: 1vh 2vh;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background-color: #fff;
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+textarea:focus, input:focus {
+    border: 1px solid #ff7043;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+input[type="file"] {
+    border: none;
+    padding: 0;
+    font-size: 14px;
+}
+
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.image-preview img{
+    border: .3vh solid rgb(0, 247, 255) inset;
+}
+
+.image-wrapper {
+    position: relative;
+    display: inline-block;
+    max-width: 120px;
+    max-height: 120px;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    form {
+        grid-template-columns: 1fr; /* Una sola columna en pantallas más pequeñas */
+        padding: 15px;
+    }
+
+    .container_input {
+        grid-template-columns: 1fr; /* Los inputs se apilan en una sola columna */
+    }
+
+    .image-preview {
+        justify-content: center;
+    }
+
+    .container-btns button {
+        width: 100%;
+    }
+}
