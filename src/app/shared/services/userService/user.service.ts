@@ -67,7 +67,7 @@ export class UserService {
       this.loadingSubject.next(false);
     }
   }
-  
+
   getUserFromToken(token: string): any | null {
     try {
       const decoded: any = jwtDecode(token);
@@ -85,13 +85,24 @@ export class UserService {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`
       }
-    })
+    });
   }
 
-  clearUser(): void {
-    this.userSubject.next(null);
-    this.loadingSubject.next(false);
+  uploadProfilePicture(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('photo', file);
+    const token = localStorage.getItem('authToken');
+    
+    console.log('Sending token:', token);
+  
+    return this.http.post(`${environment.ApiUrl}/update-profile-picture`, formData, { 
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   }
+  
+  
 
   updateUser(userId: number, updatedData: Partial<User>): Observable<any> {
     return this.http.put(`${environment.ApiUrl}user/${userId}`, updatedData, {
@@ -100,5 +111,10 @@ export class UserService {
       }
     });
   }
-}
   
+  clearUser(): void {
+    this.userSubject.next(null);
+    this.loadingSubject.next(false);
+  }
+
+}

@@ -19,19 +19,20 @@ export class FormEditUserComponent {
 
   firstName: string = '';
   lastName: string = '';
+  email: string = '';
+  password: string = '';
+  bio: string = '';
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.userService.user$.subscribe((user) => {
-      if (user) {
-        this.user = user;
+      if (user && user.username) {
         const [name, ...lastNameParts] = user.username.split(' ');
         this.firstName = name;
         this.lastName = lastNameParts.join(' ');
       }
       this.isLoading = false;
-      console.log('Loaded user:', user);
     });
 
     if (!this.user) {
@@ -48,11 +49,11 @@ export class FormEditUserComponent {
       });
       return;
     }
-  
+
     if (!this.user) {
       return;
     }
-  
+
     const updatedData = {
       username: `${formValues.firstName} ${formValues.lastName}`,
       email: formValues.email,
@@ -60,7 +61,7 @@ export class FormEditUserComponent {
       profile_picture: formValues.profile_picture,
       bio: formValues.bio,
     };
-  
+
     this.userService.updateUser(this.user.user_id, updatedData).subscribe(
       (response) => {
         Swal.fire({
@@ -81,7 +82,6 @@ export class FormEditUserComponent {
       }
     );
   }
-  
 
   cancelChanges(): void {
     this.userService.loadUserFromToken();
