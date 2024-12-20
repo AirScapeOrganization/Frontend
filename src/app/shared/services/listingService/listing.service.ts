@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment.development';
 import { Listing } from '../../interface/listing';
 
@@ -48,4 +48,34 @@ export class ListingService {
   getListingById(id: number): Observable<Listing> {
     return this.http.get<Listing>(`${environment.ApiUrl}listings/${id}`);
   }
+
+  addPhotos(image: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('photo', image);
+  
+    const token = localStorage.getItem('authToken');
+    
+    return this.http.post<{ uploaded_url: string }>(
+      `${environment.ApiUrl}photos`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    ).pipe(
+      map((response) => response.uploaded_url)
+    );
+  }
+  
+  addListing(listingData: FormData): Observable<any> {
+    const token = localStorage.getItem('authToken');
+
+    return this.http.post(`${environment.ApiUrl}listings`, listingData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+  }
+
 }

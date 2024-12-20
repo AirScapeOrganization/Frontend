@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { ExplorerComponent } from './explorer/explorer.component';
+import { ExplorerComponent } from './dashboard/explorer/explorer.component';
 import { RouterModule } from '@angular/router';
 import { UserResolver } from './shared/services/userResolver/user.resolver';
 import { ErrorComponent } from './shared/pages/error/error.component';
@@ -15,6 +15,7 @@ import { PanelComponent } from './dashboard/panel/panel.component';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { NotificationsComponent } from './dashboard/notifications/notifications.component';
 import { PropertyComponent } from './property/property.component';
+import { FormPropertyComponent } from './dashboard/property/form-property/form-property.component';
 
 export const routes: Routes = [
   {
@@ -42,7 +43,8 @@ export const routes: Routes = [
           { path: '', redirectTo: 'panel', pathMatch: 'full' },
           { path: '', component: PanelComponent },
           { path: 'profile', component: ProfileComponent },
-          { path: 'notifications', component: NotificationsComponent}
+          { path: 'notifications', component: NotificationsComponent},
+          { path: 'add-propertie', component: FormPropertyComponent},
         ]
        },
       { path: '**', redirectTo: '/error' },

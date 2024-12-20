@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ListingsComponent } from '../shared/components/listings/listings.component';
+import { ListingsComponent } from '../../shared/components/listings/listings.component';
 
 
 @Component({

@@ -10,6 +10,6 @@ export interface Listing {
     num_bathrooms: number;
     max_guests: number;
     user_id: number;
-    photo_url: string;
+    photo_url: string[];
   }
   
