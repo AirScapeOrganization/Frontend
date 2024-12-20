@@ -28,10 +28,10 @@ export class ListingService {
       this.loadingSubject.next(false);
       return;
     }
-  
+
     const token = localStorage.getItem('authToken');
     this.loadingSubject.next(true);
-  
+
     if (token) {
       try {
         this.http.get<{ properties: Listing[] }>(environment.ApiUrl + 'listings')
@@ -53,39 +53,36 @@ export class ListingService {
       }
     }
   }
-  addListing(listingData: Partial<Listing>, images: File[]): Observable<any> {
-  const formData = new FormData();
 
-  Object.keys(listingData).forEach((key) => {
-    formData.append(key, listingData[key as keyof Listing] as string);
-  });
-
-  images.forEach((image) => {
-    formData.append('photos[]', image);  
-  });
-
-  console.log('FormData being sent:', formData);
-
-  return this.http.post(`${environment.ApiUrl}listings`, formData, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-    },
-  });
-}
-addPhotos(image: File): Observable<string> {
-  const formData = new FormData();
-  formData.append('photo', image);
-
-  return this.http.post<{ uploaded_url: string }>(`${environment.ApiUrl}photos`, formData, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-    },
-  }).pipe(
-    map((response) => response.uploaded_url) // Extract the URL from the response
-  );
-}
-
-
-
+  addPhotos(image: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('photo', image);
+  
+    const token = localStorage.getItem('authToken'); // Recuperar el token del almacenamiento local
+  
+    return this.http.post<{ uploaded_url: string }>(
+      `${environment.ApiUrl}photos`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    ).pipe(
+      map((response) => response.uploaded_url)
+    );
   }
   
+  addListing(listingData: FormData): Observable<any> {
+    const token = localStorage.getItem('authToken');
+
+    return this.http.post(`${environment.ApiUrl}listings`, listingData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+  }
+  
+  
+  
+}

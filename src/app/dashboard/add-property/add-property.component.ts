@@ -1,28 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ListingService } from '../../shared/services/listingService/listing.service';
 import Swal from 'sweetalert2';
+import { NavbarComponent } from 'app/shared/components/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
-import { FooterComponent } from '../../shared/components/footer/footer.component';
 
 @Component({
   selector: 'app-add-property',
   standalone: true,
-  imports: [
-    NavbarComponent, FooterComponent, CommonModule, ReactiveFormsModule, FormsModule
-  ],
+  imports: [NavbarComponent, CommonModule, ReactiveFormsModule],
   templateUrl: './add-property.component.html',
   styleUrls: ['./add-property.component.css'],
 })
 export class AddPropertyComponent implements OnInit {
   propertyForm: FormGroup;
-  images: File[] = [];
   imagePreviews: string[] = [];
-  
-  property: any = {}; 
+  uploadedUrls: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -39,41 +33,13 @@ export class AddPropertyComponent implements OnInit {
       num_bathrooms: ['', Validators.required],
       max_guests: ['', Validators.required],
       description: ['', Validators.required],
+      photos: [null], // Añadir el control para las fotos
     });
   }
 
-  ngOnInit(): void {
-    // Suscribirse a los cambios del formulario
-    this.propertyForm.valueChanges.subscribe((values) => {
-      this.property ={values};
-      console.log(this.property);
-    });
-  }
-
-  logForm(fieldName: string) {
-    console.log(`${fieldName}: `, this.property[fieldName]); 
-  }
-
-  logImages() {
-    this.images.forEach((image, index) => {
-      console.log(`Imagen ${index + 1}: ${image.name}`);
-    });
-  }
+  ngOnInit(): void { }
 
   onSubmit() {
-    console.log("Form Submitted!");
-    this.logForm('title');
-    this.logForm('address');
-    this.logForm('latitude');
-    this.logForm('longitude');
-    this.logForm('price_per_night');
-    this.logForm('num_bedrooms');
-    this.logForm('num_bathrooms');
-    this.logForm('max_guests');
-    this.logForm('description');
-    
-    this.logImages();
-
     if (this.propertyForm.invalid) {
       Swal.fire({
         icon: 'error',
@@ -83,11 +49,26 @@ export class AddPropertyComponent implements OnInit {
       return;
     }
 
-  
-    const listingData = this.property;
-  
-    this.listingService.addListing(listingData, this.images).subscribe(
-      () => {
+    const listingData = new FormData();
+    console.log('Formulario antes de agregar a FormData:', this.propertyForm.value);
+
+    // Agregar los campos del formulario al FormData
+    Object.keys(this.propertyForm.value).forEach((key) => {
+      listingData.append(key, this.propertyForm.value[key]);
+    });
+
+    // Agregar las fotos al FormData
+    this.uploadedUrls.forEach((url) => {
+      listingData.append('photos[]', url); // Si el backend espera un array de fotos
+    });
+
+    // Inspeccionar el contenido de FormData antes de enviarlo
+    for (let pair of listingData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]); // Muestra la clave y el valor en la consola
+    }
+
+    this.listingService.addListing(listingData).subscribe(
+      (response) => {
         Swal.fire({
           icon: 'success',
           title: 'Property Added',
@@ -103,8 +84,6 @@ export class AddPropertyComponent implements OnInit {
           errorMessage = 'Validation failed. Please check your inputs.';
         } else if (error.status === 500) {
           errorMessage = 'Server error. Please contact support.';
-        } else if (error.status === 403) {
-          errorMessage = 'You are not authorized to perform this action.';
         }
 
         Swal.fire({
@@ -117,35 +96,44 @@ export class AddPropertyComponent implements OnInit {
     );
   }
 
-  onImageUpload(event: any) {
-  const files = event.target.files;
-  if (files) {
-    for (const file of files) {
-      this.listingService.addPhotos(file).subscribe(
-        (uploadedUrl) => {
-          this.imagePreviews.push(uploadedUrl); // Add the Supabase URL to the preview list
-          console.log(`Image uploaded: ${file.name}, URL: ${uploadedUrl}`);
-        },
-        (error) => {
-          console.error('Error uploading image:', error);
-          Swal.fire({
-            icon: 'error',
-            title: 'Upload Failed',
-            text: 'Failed to upload image. Please try again.',
-          });
-        }
-      );
+
+  onImageUpload(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files || input.files.length === 0) {
+      return;
     }
+
+    const file = input.files[0]; // Solo subimos el primer archivo seleccionado
+    const reader = new FileReader();
+
+    // Mostrar una vista previa local
+    reader.onload = () => {
+      if (reader.result) {
+        this.imagePreviews.push(reader.result as string);
+      }
+    };
+    reader.readAsDataURL(file);
+
+    // Subir la imagen al servidor
+    this.listingService.addPhotos(file).subscribe(
+      (uploadedUrl) => {
+        this.uploadedUrls.push(uploadedUrl);
+        console.log(`Image uploaded successfully: ${uploadedUrl}`);
+      },
+      (error) => {
+        console.error('Error uploading image:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Upload Failed',
+          text: 'Failed to upload image. Please try again.',
+        });
+      }
+    );
   }
-}
 
   removeImage(index: number) {
-    this.images.splice(index, 1);  
-    this.imagePreviews.splice(index, 1);  
-    console.log('Image removed!');
-  }
-
-  onCancel() {
-    console.log("Cancel clicked!");
+    this.imagePreviews.splice(index, 1);
+    this.uploadedUrls.splice(index, 1);
   }
 }

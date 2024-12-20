@@ -37,24 +37,19 @@
       <label for="description">Description</label>
       <textarea id="description" formControlName="description" rows="3" maxlength="500" required style="border-radius: 5px;"></textarea>
     </div>
+    <div class="image-container">
+      <div class="image-upload bg-blend-darken">
+        <label for="imageUpload">Insert Images</label>
+        <input type="file" id="imageUpload" (change)="onImageUpload($event)" />
+      </div>
+      <div class="image-preview">
+        <div *ngFor="let image of imagePreviews; let i = index" class="image-wrapper">
+          <img [src]="image" alt="Preview" />
+          <button class="delete-btn" type="button" (click)="removeImage(i)">X</button>
+        </div>
+      </div>
+    </div>
     <button class="bg-orange-500 save rounded-lg text-white" type="submit">Save information</button>
-    <button class="bg-black text-white rounded-lg" type="button" (click)="onCancel()">Cancel information</button>
+    <button class="bg-black text-white rounded-lg" type="button">Cancel information</button>
   </form>
-
- <!-- app.component.html -->
- <div class="image-container">
-   <div class="image-upload bg-blend-darken">
-     <label for="imageUpload">Insert Images</label>
-     <input type="file" id="imageUpload" (change)="onImageUpload($event)" multiple />
-   </div>
-   <div class="image-preview">
-     <div *ngFor="let image of imagePreviews; let i = index" class="image-wrapper">
-       <img [src]="image" alt="Preview" />
-       <button class="delete-btn" type="button" (click)="removeImage(i)">X</button>
-     </div>
-   </div>
- </div>
-
-
 </main>
-<app-footer></app-footer>
