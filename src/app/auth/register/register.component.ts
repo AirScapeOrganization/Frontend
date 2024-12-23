@@ -16,7 +16,7 @@ export class RegisterComponent {
   email = '';
   password = '';
   profile_picture = 'not_found';
-  bio = 'not_found';
+  bio = `Hello, I am a new airscape user`;
   is_owner: boolean | null = null;
   authService= inject(AuthService);
 
@@ -46,10 +46,8 @@ export class RegisterComponent {
             showConfirmButton: false,
           });
           localStorage.setItem('authToken', response.token);
-          console.log('Register successfully', response);
-
           setTimeout(() => {
-            this.router.navigate(['/panel']);
+            this.router.navigate(['panel']);
           }, 2000);
         },
         error: (err) => {
@@ -59,7 +57,6 @@ export class RegisterComponent {
             text: err.error?.message || 'An error occurred during registration.',
             confirmButtonText: 'Accept',
           });
-          console.error('Error at registration:', err);
         },
       });
   }

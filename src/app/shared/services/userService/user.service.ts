@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../../interface/user';
@@ -12,6 +12,10 @@ import { User } from '../../interface/user';
 export class UserService {
   public userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
+
+  private profilePictureUrlSubject = new BehaviorSubject<string | null>(null);
+  profilePictureUrl$ = this.profilePictureUrlSubject.asObservable();
+
   private loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable();
 
@@ -25,21 +29,21 @@ export class UserService {
       this.loadingSubject.next(false);
       return;
     }
-  
+
     const token = localStorage.getItem('authToken');
     this.loadingSubject.next(true);
-  
+
     if (token) {
       try {
         const decoded: any = jwtDecode(token);
         const userId = decoded.sub;
-  
+
         const userFromToken = {
           user_id: decoded.sub,
           username: decoded.username,
           role: decoded.role,
         };
-  
+
         this.userSubject.next(userFromToken);
         this.getUserById(userId).subscribe(
           (response) => {
@@ -48,7 +52,7 @@ export class UserService {
               user_id: response.user_id,
             };
             this.userSubject.next(fullUserDetails);
-  
+
             this.loadingSubject.next(false);
           },
           (error) => {
@@ -92,26 +96,34 @@ export class UserService {
     const formData = new FormData();
     formData.append('photo', file);
     const token = localStorage.getItem('authToken');
-    
-    console.log('Sending token:', token);
-  
-    return this.http.post(`${environment.ApiUrl}/update-profile-picture`, formData, { 
+
+    return this.http.post(`${environment.ApiUrl}update-profile-picture`, formData, {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    });
+    }).pipe(
+      tap((response: any) => {
+        if (response && response.url) {
+          this.profilePictureUrlSubject.next(response.url);
+          console.log('Profile picture URL updated in service:', response.url);
+        }
+      })
+    );
   }
-  
-  
 
   updateUser(userId: number, updatedData: Partial<User>): Observable<any> {
+    const profilePictureUrl = this.profilePictureUrlSubject.getValue();
+    if (profilePictureUrl) {
+      updatedData.profile_picture = profilePictureUrl;
+    }
+
     return this.http.put(`${environment.ApiUrl}user/${userId}`, updatedData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`
       }
     });
   }
-  
+
   clearUser(): void {
     this.userSubject.next(null);
     this.loadingSubject.next(false);

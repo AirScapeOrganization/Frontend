@@ -1,20 +1,22 @@
 <section *ngIf="user" class="flex flex-col w-full items-center space-y-6">
   <header class="text-center mb-6">
-    <img [src]="user.profile_picture || 'https://ui-avatars.com/api/?name=' + user.username + '&background=f77800&color=fff'"
-      alt="Profile Picture" class="w-36 h-36 rounded-full mx-auto object-cover" />
-    <h1 class="mt-4 text-xl font-semibold text-gray-800">{{ user.username }}</h1>
+    <img [src]="user.profile_picture === 'not_found' 
+    ? 'https://ui-avatars.com/api/?name=' + user.username + '&background=f77800&color=fff' 
+    : user.profile_picture" [alt]="user.username + ' profile picture'"
+      class="w-36 h-36 rounded-full mx-auto object-cover">
 
+    <h1 class="mt-4 text-xl font-semibold text-gray-800">{{ user.username }}</h1>
     <button (click)="fileInput.click()" class="mt-4 text-sm text-blue-500">Change Profile Picture</button>
-    <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+    <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" class="hidden" />
   </header>
 
   <div class="flex flex-col gap-5 w-full items-menu">
-    <!-- Enlaces del menú -->
     <a class="flex items-center gap-3 font-semibold text-gray-700 hover:text-orange-500" routerLink="/panel/profile">
       <fa-icon [icon]="faAngleRight" class="text-lg"></fa-icon>
       <label>Personal Information</label>
     </a>
-    <a class="flex items-center gap-3 font-semibold text-gray-700 hover:text-orange-500" routerLink="/panel/notifications">
+    <a class="flex items-center gap-3 font-semibold text-gray-700 hover:text-orange-500"
+      routerLink="/panel/notifications">
       <fa-icon [icon]="faAngleRight" class="text-lg"></fa-icon>
       <label>Notifications</label>
     </a>

@@ -18,7 +18,9 @@
         <p>{{ user.role }}</p>
       </div>
       <a class="w-8 h-8 overflow-hidden rounded-full" (click)="navigateToPanel()">
-        <img [src]="'https://ui-avatars.com/api/?name=' + user.username + '&background=f77800&color=fff'" alt="Profile Picture" class="w-full h-full object-cover">
+        <img [src]="user.profile_picture === 'not_found' 
+        ? 'https://ui-avatars.com/api/?name=' + user.username + '&background=f77800&color=fff' 
+        : user.profile_picture" [alt]="user.username + ' profile picture'" class="w-full h-full object-cover">
       </a>
       <a>
         <fa-icon [icon]="faBell" class="navbar-icon border rounded-lg px-4 py-1"></fa-icon>
@@ -63,14 +65,15 @@
       </a>
     </ng-container>
 
- 
+
     <div *ngIf="!isLoading && user" class="mobile-user-menu">
       <div class="flex flex-col justify-center items-center text-sm text-slate-400">
         <p>{{ user.username }}</p>
         <p>{{ user.role }}</p>
       </div>
       <a class="w-8 h-8 overflow-hidden rounded-full" (click)="navigateToPanel()">
-        <img [src]="'https://ui-avatars.com/api/?name=' + user.username + '&background=f77800&color=fff'" alt="Profile Picture" class="w-full h-full object-cover">
+        <img [src]="'https://ui-avatars.com/api/?name=' + user.username + '&background=f77800&color=fff'"
+          alt="Profile Picture" class="w-full h-full object-cover">
       </a>
       <a>
         <fa-icon [icon]="faBell" class="navbar-icon border rounded-lg px-4 py-1"></fa-icon>
@@ -82,7 +85,8 @@
         </a>
         <div *ngIf="isDropdownOpen" class="absolute bg-white border rounded-lg shadow-lg z-50">
           <ul>
-            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" routerLink="/settings/notifications">Notifications</li>
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" routerLink="/settings/notifications">Notifications
+            </li>
             <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" routerLink="/settings/profile">Profile</li>
             <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="logout()">Logout</li>
           </ul>

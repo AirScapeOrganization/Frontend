@@ -10,9 +10,8 @@ import Swal from 'sweetalert2';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './form-edit-user.component.html',
-  styleUrl: './form-edit-user.component.css'
+  styleUrls: ['./form-edit-user.component.css']
 })
-
 export class FormEditUserComponent {
   user: User | null = null;
   isLoading: boolean = true;
@@ -22,6 +21,7 @@ export class FormEditUserComponent {
   email: string = '';
   password: string = '';
   bio: string = '';
+  profilePictureUrl: string = '';
 
   constructor(private userService: UserService) {}
 
@@ -32,11 +32,39 @@ export class FormEditUserComponent {
         this.firstName = name;
         this.lastName = lastNameParts.join(' ');
       }
+      this.user = user;
+      this.profilePictureUrl = user?.profile_picture || ''; 
       this.isLoading = false;
     });
 
     if (!this.user) {
+      console.log('No user loaded, fetching from token...');
       this.userService.loadUserFromToken();
+    }
+  }
+
+  onFileSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      this.userService.uploadProfilePicture(file).subscribe(
+        (response: any) => {
+          this.profilePictureUrl = response.uploaded_url;
+          Swal.fire({
+            icon: 'success',
+            title: 'Image uploaded',
+            text: 'Profile picture updated successfully!',
+          });
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to upload image. Please try again.',
+          });
+          console.error('Error uploading image:', error);
+        }
+      );
     }
   }
 
@@ -58,7 +86,7 @@ export class FormEditUserComponent {
       username: `${formValues.firstName} ${formValues.lastName}`,
       email: formValues.email,
       password: formValues.password,
-      profile_picture: formValues.profile_picture,
+      profile_picture: this.profilePictureUrl,
       bio: formValues.bio,
     };
 
@@ -87,4 +115,3 @@ export class FormEditUserComponent {
     this.userService.loadUserFromToken();
   }
 }
-
